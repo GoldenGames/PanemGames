@@ -29,11 +29,11 @@ public class TemperatureManager implements Updatable {
 	public void update() {
 		this.currentTemperature = getTemperature();
 		if (s == null)
-			s = PlayerScoreboardManager.getPlayerScoreboard(getPlayer()).addValue("§e" + currentTemperature + "°", 1);
+			s = PlayerScoreboardManager.getPlayerScoreboard(getPlayer()).addValue("§e" + currentTemperature + "°", 7);
 		if (s.getEntry().equals("§e" + currentTemperature + "°"))
 			return;
 		PlayerScoreboardManager.getPlayerScoreboard(getPlayer()).resetScore(s);
-		s = PlayerScoreboardManager.getPlayerScoreboard(getPlayer()).addValue("§e" + currentTemperature + "°", 1);
+		s = PlayerScoreboardManager.getPlayerScoreboard(getPlayer()).addValue("§e" + currentTemperature + "°", 7);
 	}
 	
 	public Player getPlayer() {

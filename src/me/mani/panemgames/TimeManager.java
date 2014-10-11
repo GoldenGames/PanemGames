@@ -53,13 +53,13 @@ public class TimeManager implements Updatable {
 	public void update() {
 		currentTime = getTime(world.getTime());
 		if (s == null) {
-			s = pl.getPlayerScoreboardManager().addValueAll("§e" + currentTime.getName(), 4);
+			s = pl.getPlayerScoreboardManager().addValueAll("§e" + currentTime.getName(), 10);
 			return;
 		}
 		if (s.getEntry().equals("§e" + currentTime.getName()))
 			return;
 		pl.getPlayerScoreboardManager().resetScoreAll(s);
-		s = pl.getPlayerScoreboardManager().addValueAll("§e" + currentTime.getName(), 4);
+		s = pl.getPlayerScoreboardManager().addValueAll("§e" + currentTime.getName(), 10);
 	}
 		
 	private Time getTime(long time) {

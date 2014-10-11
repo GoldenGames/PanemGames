@@ -39,11 +39,19 @@ public class PanemGames extends JavaPlugin implements Listener {
 		
 		// Scoreboard
 		
-		playerScoreboardManager = new PlayerScoreboardManager("�e- PanemGames -", DisplaySlot.SIDEBAR);
+		playerScoreboardManager = new PlayerScoreboardManager("§e- PanemGames -", DisplaySlot.SIDEBAR);
 		
-		playerScoreboardManager.addValueAll("�7Zeit:", 5);
-		playerScoreboardManager.addValueAll("�1", 3);
-		playerScoreboardManager.addValueAll("�7Temperatur:", 2);
+		playerScoreboardManager.addValueAll("§7Zeit:", 11);			//	11
+																	//	10
+		playerScoreboardManager.addValueAll("§1", 9);				//	9
+		playerScoreboardManager.addValueAll("§7Temperatur:", 8);	//	8
+																	//	7
+		playerScoreboardManager.addValueAll("§2", 6);				//	6
+		playerScoreboardManager.addValueAll("§7Durst/Hunger:", 5);	//	5
+		playerScoreboardManager.addValueAll("§6██████████", 4);	//	4
+		playerScoreboardManager.addValueAll("§3", 3);				//	3
+		playerScoreboardManager.addValueAll("§7Körper:", 2);		//	2
+		playerScoreboardManager.addValueAll("§8███§a██§8█████", 1);	//	1
 		
 		// TimeManager
 		
@@ -58,11 +66,11 @@ public class PanemGames extends JavaPlugin implements Listener {
 		// Hologram
 		
 		welcomeHologram = new Hologram("welcomeHologram", LocationManager.getLocation("lobbyWelcome").getLocation());
-		welcomeHologram.addLine("�7Willkommen bei �ePanemGames");
+		welcomeHologram.addLine("§7Willkommen bei §ePanemGames");
 		
 		// Starte Lobbyphase
 		
-		PlayerManager.sendAll("�7[�ePanemGames�7] �8Willkommen bei �cPanemGames");
+		PlayerManager.sendAll("§7[§ePanemGames§7] §8Willkommen bei §cPanemGames");
 		CountdownManager cm = new CountdownManager(this);
 		Lobby lobby = new Lobby(cm);
 		
