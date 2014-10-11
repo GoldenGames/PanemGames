@@ -4,6 +4,7 @@ import me.mani.panemgames.commands.HologramCommand;
 import me.mani.panemgames.commands.PingCommand;
 import me.mani.panemgames.commands.RemovePointCommand;
 import me.mani.panemgames.commands.SetPointCommand;
+import me.mani.panemgames.gamestate.Lobby;
 import me.mani.panemgames.holograms.Hologram;
 import me.mani.panemgames.listener.PlayerJoinListener;
 
@@ -16,6 +17,7 @@ public class PanemGames extends JavaPlugin implements Listener {
 
 	private PlayerScoreboardManager playerScoreboardManager;
 	private TimeManager timeManager;
+	private CountdownManager countdownManager;
 	
 	private Hologram welcomeHologram;
 	
@@ -57,6 +59,10 @@ public class PanemGames extends JavaPlugin implements Listener {
 		
 		timeManager = new TimeManager(this, Bukkit.getWorld("world"));
 		
+		// CountdownManager
+		
+		countdownManager = new CountdownManager(this);
+		
 		// UpdatingManager
 		
 		UpdatingScheduler updatingScheduler = new UpdatingScheduler();
@@ -71,10 +77,9 @@ public class PanemGames extends JavaPlugin implements Listener {
 		// Starte Lobbyphase
 		
 		PlayerManager.sendAll("§7[§ePanemGames§7] §8Willkommen bei §cPanemGames");
-		CountdownManager cm = new CountdownManager(this);
-		Lobby lobby = new Lobby(cm);
+		Lobby lobby = new Lobby(this);
 		
-		Bukkit.getPluginManager().registerEvents(lobby, this);
+		Bukkit.getPluginManager().registerEvents(lobby, this); // Lobbylistener
 		
 		// NUR ZUM TESTEN TODO: ENTFERNEN
 		
@@ -101,5 +106,9 @@ public class PanemGames extends JavaPlugin implements Listener {
 	
 	public TimeManager getTimeManager() {
 		return this.timeManager;
+	}
+	
+	public CountdownManager getCountdownManager() {
+		return this.countdownManager;
 	}
 }

@@ -1,7 +1,12 @@
-package me.mani.panemgames;
+package me.mani.panemgames.gamestate;
 
 import java.util.Random;
 
+import me.mani.panemgames.CountdownCallback;
+import me.mani.panemgames.CountdownManager;
+import me.mani.panemgames.LocationManager;
+import me.mani.panemgames.PanemGames;
+import me.mani.panemgames.PlayerManager;
 import me.mani.panemgames.CountdownManager.Countdown;
 import me.mani.panemgames.CountdownManager.Countdown.CountdownCountEvent;
 import me.mani.panemgames.effects.ParticleEffect;
@@ -30,8 +35,8 @@ public class Lobby implements Listener {
 	private CountdownManager countdownManager;	
 	private Countdown lobbyCountdown;
 
-	public Lobby(CountdownManager countdownManager) {
-		this.countdownManager = countdownManager;
+	public Lobby(PanemGames pl) {
+		this.countdownManager = pl.getCountdownManager();
 	}
 	
 	public void start() {

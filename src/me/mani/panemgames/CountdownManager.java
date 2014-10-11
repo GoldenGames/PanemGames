@@ -23,7 +23,6 @@ public class CountdownManager {
     * @param sound Der Sound der abgespielt werden soll
     * @param pattern Der Text ([time] -> Die verbleibende Zeit) 
     */
-	
 	public Countdown createCountdown(CountdownCallback callback, int from, int to) {
 		Countdown c = new Countdown(from, to, callback);
 		c.runTaskTimer(pl, 0L, 20L);

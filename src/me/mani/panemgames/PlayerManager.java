@@ -3,9 +3,12 @@ package me.mani.panemgames;
 import java.util.Arrays;
 import java.util.List;
 
+import net.minecraft.server.v1_7_R4.EntityPlayer;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scoreboard.Scoreboard;
@@ -39,6 +42,12 @@ public class PlayerManager {
 		for (Player p : Bukkit.getOnlinePlayers()) {
 			p.teleport(loc);
 		}
+	}
+	
+	public static int getPing(Player p) {
+		CraftPlayer cp = (CraftPlayer) p;
+		EntityPlayer ep = cp.getHandle();
+		return ep.ping;
 	}
 	
 	public static void teleportAll(Location... loc) {

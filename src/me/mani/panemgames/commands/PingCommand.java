@@ -1,6 +1,5 @@
 package me.mani.panemgames.commands;
 
-import me.mani.panemgames.Game;
 import me.mani.panemgames.PlayerManager;
 
 import org.bukkit.command.Command;
@@ -19,7 +18,7 @@ public class PingCommand implements CommandExecutor {
 			return false;
 		Player p = (Player) sender;
 		
-		PlayerManager.send(PlayerManager.pre + " §7Ping: §e" + Game.getPing(p) + " ms", p);
+		PlayerManager.send(PlayerManager.pre + " §7Ping: §e" + PlayerManager.getPing(p) + " ms", p);
 		
 		return true;
 	}
