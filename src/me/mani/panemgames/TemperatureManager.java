@@ -39,24 +39,8 @@ public class TemperatureManager implements Updatable {
 	}
 	
 	private int getTemperature() {
-		int temperature = 0;
-		switch(this.getTime()) {
-		case SUNRISE:
-			temperature = 15;
-			break;
-		case MIDDAY:
-			temperature = 20;
-			break;
-		case AFTERNOON:
-			temperature = 25;
-			break;
-		case SUNSET:
-			temperature = 15;
-			break;
-		default:
-			temperature = 10;
-			break;
-		}
+		int temperature = this.getTime().getTemperature();
+
 		if (isNextToFire())
 			temperature += 10;
 		if (isInWind())
@@ -65,6 +49,7 @@ public class TemperatureManager implements Updatable {
 			temperature -= 10;
 		if (isInRain())
 			temperature -= 5;
+		
 		return temperature;
 	}
 	

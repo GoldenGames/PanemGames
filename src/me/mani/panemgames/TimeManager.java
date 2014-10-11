@@ -20,16 +20,21 @@ public class TimeManager implements Updatable {
 	}
 	
 	enum Time {
-		SUNRISE ("Morgen"), MIDDAY ("Mittag"), AFTERNOON ("Nachmittag"), SUNSET ("Abend"), NIGHT ("Nacht"), OTHER ("Unbekannt");
+		SUNRISE ("Morgen", 15), MIDDAY ("Mittag", 20), AFTERNOON ("Nachmittag", 25), SUNSET ("Abend", 15), NIGHT ("Nacht", 10), OTHER ("Unbekannt", 10);
 		
 		private String name;
+		private int temperature;
 		
-		private Time(String name) {
+		private Time(String name, int temperature) {
 			this.name = name;
 		}
 		
 		public String getName() {
 			return this.name;
+		}
+		
+		public int getTemperature() {
+			return this.temperature;
 		}
 	}
 
