@@ -13,7 +13,9 @@ public class TemperatureManager implements Updatable {
 	
 	private PanemGames pl;
 	
-	private double currentTemperature;	
+	private double currentTemperature;
+	private double currentBaseTemperature;
+	private Time tempTime;
 	private Player p;
 	private Score s;
 	
@@ -39,20 +41,27 @@ public class TemperatureManager implements Updatable {
 	}
 	
 	private double getTemperature() {
-		Time time = this.getTime();
-		double temperature = this.getRandomDouble(time.getMinTemperature(), time.getMaxTemperature());
+		double temperature = 0.0;
+		
+		if (tempTime == null || !tempTime.equals(this.getTime())) {
+			tempTime = this.getTime();
+			temperature = this.getRandomDouble(tempTime.getMinTemperature(), tempTime.getMaxTemperature());
+			currentBaseTemperature = temperature;
+		}
+		else
+			temperature = currentBaseTemperature;
 
 		if (isNextToFire())
-			temperature += 10;
+			temperature += 10.0;
 		if (isInWind())
-			temperature -= 5;
+			temperature -= 5.0;
 		if (isInWater())
-			temperature -= 10;
+			temperature -= 10.0;
 		if (isInRain())
-			temperature -= 5;
+			temperature -= 5.0;	
 		
 		temperature = Math.round(10.0 * temperature) / 10.0;
-		
+
 		return temperature;
 	}
 	
@@ -60,8 +69,9 @@ public class TemperatureManager implements Updatable {
 		return pl.getTimeManager().getCurrentTime();
 	}
 	
+	@SuppressWarnings("deprecation")
 	private boolean isNextToFire() {
-		return false;
+		return p.getTargetBlock(null, 2).getType().equals(Material.FIRE);
 	}
 	
 	private boolean isInWind() {

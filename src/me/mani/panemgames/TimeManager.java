@@ -58,7 +58,7 @@ public class TimeManager implements Updatable {
 		}
 		if (s.getEntry().equals("§e" + currentTime.getName()))
 			return;
-		pl.getPlayerScoreboardManager().resetScoreAll(4);
+		pl.getPlayerScoreboardManager().resetScoreAll(s);
 		s = pl.getPlayerScoreboardManager().addValueAll("§e" + currentTime.getName(), 4);
 	}
 		

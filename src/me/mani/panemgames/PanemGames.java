@@ -12,11 +12,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.DisplaySlot;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketEvent;
-
 public class PanemGames extends JavaPlugin implements Listener {
 
 	private PlayerScoreboardManager playerScoreboardManager;
@@ -37,8 +32,6 @@ public class PanemGames extends JavaPlugin implements Listener {
 		// Listener
 		
 		Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(this), this);
-
-		startPacketListening();
 		
 		// Load Locations
 		
@@ -100,16 +93,5 @@ public class PanemGames extends JavaPlugin implements Listener {
 	
 	public TimeManager getTimeManager() {
 		return this.timeManager;
-	}
-	
-	public void startPacketListening() {
-		ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(this, PacketType.Play.Server.SPAWN_ENTITY_LIVING) {
-			
-			@Override
-			public void onPacketSending(PacketEvent ev) {
-				
-			}
-			
-		});
 	}
 }

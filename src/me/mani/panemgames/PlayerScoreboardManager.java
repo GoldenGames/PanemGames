@@ -40,19 +40,9 @@ public class PlayerScoreboardManager {
 	
 	public void resetScoreAll(Score s) {
 		for (PlayerScoreboard playerScoreboard : allPlayerScoreboards) {
-			playerScoreboard.getScoreboard().resetScores(s.getEntry());
+			playerScoreboard.resetScore(s);
 		}	
 		values.remove(new Value(s.getEntry(), s.getScore()));
-	}
-	
-	public void resetScoreAll(int score) {
-		for (Iterator<PlayerScoreboard> it = allPlayerScoreboards.iterator(); it.hasNext();) {
-			PlayerScoreboard playerScoreboard = it.next();
-			for (Score s : playerScoreboard.getScoreboard().getScores(playerScoreboard.getObjective().getName())) {
-				if (s.getScore() == score)
-					resetScoreAll(s);
-			}
-		}
 	}
 	
 	public void addPlayerScoreboard(Player p) {
@@ -111,10 +101,8 @@ public class PlayerScoreboardManager {
 		}
 		
 		public void resetScore(Score s) {
-			getScoreboard().resetScores(s.getEntry());
-		}
-		
-		
+			this.s.resetScores(s.getEntry());
+		}	
 	}
 	
 	private class Value {
