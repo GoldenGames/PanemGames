@@ -1,0 +1,19 @@
+name: PanemGames
+version: 0.0.2
+main: me.mani.panemgames.PanemGames
+
+commands:
+  setpoint:
+    description: Einen Punkt setzen
+    usage: /<command>
+  removepoint:
+    description: Einen Punkt entfernen
+    usage: /<command>
+  ping:
+    description: Seinen Ping herausfinden
+    usage: /<command>
+    aliases: [p]
+  hologram:
+    description: Ein Hologramm erstellen
+    usage: /<command>
+    aliases: [holo]
