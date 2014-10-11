@@ -13,7 +13,7 @@ public class TemperatureManager implements Updatable {
 	
 	private PanemGames pl;
 	
-	private int currentTemperature;	
+	private double currentTemperature;	
 	private Player p;
 	private Score s;
 	
@@ -38,8 +38,9 @@ public class TemperatureManager implements Updatable {
 		return this.p;
 	}
 	
-	private int getTemperature() {
-		int temperature = this.getTime().getTemperature();
+	private double getTemperature() {
+		Time time = this.getTime();
+		double temperature = this.getRandomDouble(time.getMinTemperature(), time.getMaxTemperature());
 
 		if (isNextToFire())
 			temperature += 10;
@@ -49,6 +50,8 @@ public class TemperatureManager implements Updatable {
 			temperature -= 10;
 		if (isInRain())
 			temperature -= 5;
+		
+		temperature = Math.round(10.0 * temperature) / 10.0;
 		
 		return temperature;
 	}
@@ -75,6 +78,12 @@ public class TemperatureManager implements Updatable {
 	private boolean isInRain() {
 		return p.getWorld().hasStorm();
 	}
+	
+	private double getRandomDouble(int min, int max) {
+		return min + (Math.random() * ((max - min) + 1));
+	}
+	
+	// Static
 	
 	private static List<TemperatureManager> allManagers = new ArrayList<>();
 	
