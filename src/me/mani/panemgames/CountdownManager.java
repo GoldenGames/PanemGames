@@ -24,21 +24,18 @@ public class CountdownManager {
     * @param pattern Der Text ([time] -> Die verbleibende Zeit) 
     */
 	
-	public Countdown runCountdown(CountdownCallback callback, int from, int to, Sound sound, String pattern) {
-		Countdown c = new Countdown(from, to, callback, pattern, sound, 45,30,15,10,5,3,2,1,0);
+	public Countdown createCountdown(CountdownCallback callback, int from, int to) {
+		Countdown c = new Countdown(from, to, callback);
 		c.runTaskTimer(pl, 0L, 20L);
 		return c;
 	}
 	
 	public class Countdown extends BukkitRunnable {
 
-		public Countdown(int from, int to, CountdownCallback callback, String pattern, Sound sound, Integer... showNumbers) {
+		public Countdown(int from, int to, CountdownCallback callback) {
 			this.from = from;
 			this.to = to;
 			this.callback = callback;
-			this.pattern = pattern;
-			this.sound = sound;
-			this.showNumbers = Arrays.asList(showNumbers);
 			
 			this.downcounting = (from > to);
 		}
@@ -46,22 +43,17 @@ public class CountdownManager {
 		private int from;
 		private int to;
 		private CountdownCallback callback;
-		private String pattern;
-		private Sound sound;
-		private List<Integer> showNumbers;
 		
 		private boolean downcounting;
 		
 		@Override
 		public void run() {
-			if (showNumbers.contains(from)) {
-				PlayerManager.sendAll(pattern.replace("[time]", "" + from));
-				PlayerManager.playAll(sound);
-				
-				Title title = new Title("", "\n§e" + from, 0, 30, 0);
-				title.setTimingsToTicks();
-				title.broadcast();
-			}
+			CountdownCountEvent ev = new CountdownCountEvent(from);
+			callback.onCountdownCount(ev);
+			if (ev.hasMessage())
+				PlayerManager.sendAll(ev.getMessage());
+			if (ev.hasSound())
+				PlayerManager.playAll(ev.getSound());
 			if (downcounting) {
 				if (from != to)
 					from--;
@@ -83,6 +75,47 @@ public class CountdownManager {
 		
 		public void forceStop() {
 			this.cancel();
+		}
+		
+		public class CountdownCountEvent {
+			
+			public CountdownCountEvent(int currentNumber) {
+				this.currentNumber = currentNumber;
+			}
+			
+			private int currentNumber;
+			
+			private String message;
+			private Sound sound;	
+			
+			public void setMessage(String message) {
+				this.message = message;
+			}
+			
+			public boolean hasMessage() {
+				return message != null;
+			}
+			
+			public String getMessage() {
+				return message;
+			}
+			
+			public void setSound(Sound sound) {
+				this.sound = sound;
+			}
+			
+			public boolean hasSound() {
+				return sound != null;
+			}
+			
+			public Sound getSound() {
+				return sound;
+			}
+			
+			public int getCurrentNumber() {
+				return this.currentNumber;
+			}
+			
 		}
 	}
 }
