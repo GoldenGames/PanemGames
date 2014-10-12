@@ -1,8 +1,5 @@
 package me.mani.panemgames;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitRunnable;
 

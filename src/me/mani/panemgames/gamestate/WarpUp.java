@@ -2,14 +2,12 @@ package me.mani.panemgames.gamestate;
 
 import me.mani.panemgames.CountdownCallback;
 import me.mani.panemgames.CountdownManager;
+import me.mani.panemgames.CountdownManager.Countdown;
+import me.mani.panemgames.CountdownManager.Countdown.CountdownCountEvent;
 import me.mani.panemgames.LocationManager;
 import me.mani.panemgames.PanemGames;
 import me.mani.panemgames.PlayerManager;
-import me.mani.panemgames.CountdownManager.Countdown;
-import me.mani.panemgames.CountdownManager.Countdown.CountdownCountEvent;
-import net.minecraft.server.v1_7_R4.EntityPlayer;
 
-import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 public class WarpUp {

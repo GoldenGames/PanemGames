@@ -1,8 +1,6 @@
 package me.mani.panemgames;
 
 import org.bukkit.World;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.Score;
 
 public class TimeManager implements Updatable {

@@ -3,8 +3,6 @@ package me.mani.panemgames.holograms;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.server.v1_7_R4.PacketPlayOutSpawnEntity;
-
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
