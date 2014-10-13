@@ -28,7 +28,7 @@ public class SetPointCommand implements CommandExecutor {
 			return true;
 		}
 		if (args.length == 2) {
-			if (args[0] != "spawn") {
+			if (!args[0].equalsIgnoreCase("spawn")) {
 				PlayerManager.send(PlayerManager.pre + " §eSyntax: /setpoint <SPAWN> <NUMBER>", p);
 				return true;
 			}

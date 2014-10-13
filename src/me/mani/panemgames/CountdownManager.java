@@ -5,12 +5,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class CountdownManager {
 	
-	private PanemGames pl;
-
-	public CountdownManager(PanemGames pl) {
-		this.pl = pl;
-	}
-	
 	/**
     * Startet einen Countdown.
     *
@@ -20,13 +14,13 @@ public class CountdownManager {
     * @param sound Der Sound der abgespielt werden soll
     * @param pattern Der Text ([time] -> Die verbleibende Zeit) 
     */
-	public Countdown createCountdown(CountdownCallback callback, int from, int to) {
+	public static Countdown createCountdown(CountdownCallback callback, int from, int to, long speed) {
 		Countdown c = new Countdown(from, to, callback);
-		c.runTaskTimer(pl, 0L, 20L);
+		c.runTaskTimer(PanemGames.getPanemGames(), 0L, speed);
 		return c;
 	}
 	
-	public class Countdown extends BukkitRunnable {
+	public static class Countdown extends BukkitRunnable {
 
 		public Countdown(int from, int to, CountdownCallback callback) {
 			this.from = from;

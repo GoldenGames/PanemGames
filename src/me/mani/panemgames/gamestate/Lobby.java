@@ -10,6 +10,8 @@ import me.mani.panemgames.LocationManager;
 import me.mani.panemgames.PanemGames;
 import me.mani.panemgames.PlayerManager;
 import me.mani.panemgames.effects.ParticleEffect;
+import me.mani.panemgames.gamestate.GameStateManager.GameState;
+import me.mani.panemgames.gamestate.GameStateManager.GameStateComponent;
 
 import org.bukkit.GrassSpecies;
 import org.bukkit.Location;
@@ -18,28 +20,27 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.material.FlowerPot;
 import org.bukkit.material.LongGrass;
 
-public class Lobby implements Listener {
+public class Lobby extends GameStateComponent {
 	
-	private CountdownManager countdownManager;	
 	private Countdown lobbyCountdown;
 
 	public Lobby(PanemGames pl) {
-		this.countdownManager = pl.getCountdownManager();
+		super(GameState.LOBBY);	
 	}
 	
+	@Override
 	public void start() {
-		
+		startCountdown();
 	}
 	
 	public void startCountdown() {
-		lobbyCountdown = countdownManager.createCountdown(new CountdownCallback() {
+		lobbyCountdown = CountdownManager.createCountdown(new CountdownCallback() {
 			
 			@Override
 			public void onCountdownFinish() {
@@ -48,11 +49,14 @@ public class Lobby implements Listener {
 
 			@Override
 			public void onCountdownCount(CountdownCountEvent ev) {
-				ev.setMessage("§7[§ePanemGames§7] §8In §e" + ev.getCurrentNumber() + " §8Sekunden könnt ihr die Sponsoren beeindrucken!");
-				ev.setSound(Sound.ORB_PICKUP);
+				int i = ev.getCurrentNumber();
+				if (i == 20 || i == 15 || i == 10 || i == 5 ||i <= 3) {
+					ev.setMessage("§7[§ePanemGames§7] §8In §e" + ev.getCurrentNumber() + " §8Sekunden könnt ihr die Sponsoren beeindrucken!");
+					ev.setSound(Sound.ORB_PICKUP);
+				}
 			}
 			
-		}, 20, 0);
+		}, 20, 0, 20L);
 	}
 	
 	public void stopCountdown() {
@@ -62,23 +66,25 @@ public class Lobby implements Listener {
 	public void startLobbyMinigame() {
 		PlayerManager.sendAll("§7[§ePanemGames§7] §8Sammle so viel §eErfahrung §8wie möglich auf!");
 		spawnExp();
-		countdownManager.createCountdown(new CountdownCallback() {
+		CountdownManager.createCountdown(new CountdownCallback() {
 			
 			@Override
 			public void onCountdownFinish() {
-				start();
+				finish(new WarmUp(PanemGames.getPanemGames()));
 			}
 
 			@Override
 			public void onCountdownCount(CountdownCountEvent ev) {
-				ev.setMessage("§7[§ePanemGames§7] §8Das Spiel startet in §e" + ev.getCurrentNumber() + " §8Sekunden");
-				ev.setSound(Sound.NOTE_BASS);
+				int i = ev.getCurrentNumber();
+				if (i == 20 || i == 15 || i == 10 || i == 5 ||i <= 3) {
+					ev.setMessage("§7[§ePanemGames§7] §8Das Spiel startet in §e" + ev.getCurrentNumber() + " §8Sekunden");
+					ev.setSound(Sound.NOTE_BASS);
+				}
 			}
 			
-		}, 20, 0);
+		}, 20, 0, 20L);
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void spawnExp() {
 		Location centerLocation = LocationManager.getLocation("lobbyExp").getLocation();
 		for (int x = -10; x < 10; x++) {
@@ -89,7 +95,6 @@ public class Lobby implements Listener {
 				int randomInt = random.nextInt(10);
 				if (randomInt < 3) {
 					b.setType(Material.FLOWER_POT);
-					((FlowerPot) b.getState()).setContents(new LongGrass(GrassSpecies.FERN_LIKE));
 				}
 			}
 		}
@@ -135,5 +140,4 @@ public class Lobby implements Listener {
 			
 		}
 	}
-
 }

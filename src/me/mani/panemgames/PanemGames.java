@@ -15,15 +15,20 @@ import org.bukkit.scoreboard.DisplaySlot;
 
 public class PanemGames extends JavaPlugin implements Listener {
 
+	private static PanemGames instance;
+	
 	private PlayerScoreboardManager playerScoreboardManager;
 	private TimeManager timeManager;
-	private CountdownManager countdownManager;
 	
 	private Hologram welcomeHologram;
 	
 	@Override
 	public void onEnable() {
 				
+		// Instance
+		
+		instance = this;
+		
 		// Commands
 		
 		this.getCommand("setpoint").setExecutor(new SetPointCommand());
@@ -59,10 +64,6 @@ public class PanemGames extends JavaPlugin implements Listener {
 		
 		timeManager = new TimeManager(this, Bukkit.getWorld("world"));
 		
-		// CountdownManager
-		
-		countdownManager = new CountdownManager(this);
-		
 		// UpdatingManager
 		
 		UpdatingScheduler updatingScheduler = new UpdatingScheduler();
@@ -80,10 +81,6 @@ public class PanemGames extends JavaPlugin implements Listener {
 		Lobby lobby = new Lobby(this);
 		
 		Bukkit.getPluginManager().registerEvents(lobby, this); // Lobbylistener
-		
-		// NUR ZUM TESTEN TODO: ENTFERNEN
-		
-		lobby.startCountdown();
 	}
 	
 	@Override
@@ -99,6 +96,10 @@ public class PanemGames extends JavaPlugin implements Listener {
 			welcomeHologram.remove();
 		
 	}
+	
+	public static PanemGames getPanemGames() {
+		return instance;
+	}
 
 	public PlayerScoreboardManager getPlayerScoreboardManager() {
 		return this.playerScoreboardManager;
@@ -108,7 +109,4 @@ public class PanemGames extends JavaPlugin implements Listener {
 		return this.timeManager;
 	}
 	
-	public CountdownManager getCountdownManager() {
-		return this.countdownManager;
-	}
 }
