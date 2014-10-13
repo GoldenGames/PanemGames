@@ -4,6 +4,7 @@ import me.mani.panemgames.commands.HologramCommand;
 import me.mani.panemgames.commands.PingCommand;
 import me.mani.panemgames.commands.RemovePointCommand;
 import me.mani.panemgames.commands.SetPointCommand;
+import me.mani.panemgames.gamestate.GameStateManager;
 import me.mani.panemgames.gamestate.Lobby;
 import me.mani.panemgames.holograms.Hologram;
 import me.mani.panemgames.listener.PlayerJoinListener;
@@ -19,6 +20,7 @@ public class PanemGames extends JavaPlugin implements Listener {
 	
 	private PlayerScoreboardManager playerScoreboardManager;
 	private TimeManager timeManager;
+	private GameStateManager gameStateManager;
 	
 	private Hologram welcomeHologram;
 	
@@ -78,9 +80,7 @@ public class PanemGames extends JavaPlugin implements Listener {
 		// Starte Lobbyphase
 		
 		PlayerManager.sendAll("§7[§ePanemGames§7] §8Willkommen bei §cPanemGames");
-		Lobby lobby = new Lobby(this);
-		
-		Bukkit.getPluginManager().registerEvents(lobby, this); // Lobbylistener
+		gameStateManager = new GameStateManager(this, new Lobby(this));
 	}
 	
 	@Override
@@ -107,6 +107,10 @@ public class PanemGames extends JavaPlugin implements Listener {
 	
 	public TimeManager getTimeManager() {
 		return this.timeManager;
+	}
+	
+	public GameStateManager getGameStateManager() {
+		return this.gameStateManager;
 	}
 	
 }

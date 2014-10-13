@@ -11,9 +11,7 @@ import me.mani.panemgames.PanemGames;
 import me.mani.panemgames.PlayerManager;
 import me.mani.panemgames.effects.ParticleEffect;
 import me.mani.panemgames.gamestate.GameStateManager.GameState;
-import me.mani.panemgames.gamestate.GameStateManager.GameStateComponent;
 
-import org.bukkit.GrassSpecies;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -23,15 +21,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.material.FlowerPot;
-import org.bukkit.material.LongGrass;
 
 public class Lobby extends GameStateComponent {
 	
 	private Countdown lobbyCountdown;
 
 	public Lobby(PanemGames pl) {
-		super(GameState.LOBBY);	
+		super(pl, GameState.LOBBY);	
 	}
 	
 	@Override
@@ -70,7 +66,7 @@ public class Lobby extends GameStateComponent {
 			
 			@Override
 			public void onCountdownFinish() {
-				finish(new WarmUp(PanemGames.getPanemGames()));
+				finish(new WarmUp(getManager().getPlugin()));
 			}
 
 			@Override

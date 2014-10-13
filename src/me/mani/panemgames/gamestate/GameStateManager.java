@@ -1,32 +1,43 @@
 package me.mani.panemgames.gamestate;
 
-import java.util.HashMap;
+import me.mani.panemgames.PanemGames;
+import me.mani.panemgames.event.events.GameStateChangeEvent;
 
-import me.mani.panemgames.PanemListenerManager.PanemEvent;
-import me.mani.panemgames.PanemListenerManager.PanemListener;
+import org.bukkit.Bukkit;
+import org.bukkit.event.HandlerList;
 
-import org.bukkit.event.Listener;
 
 public class GameStateManager {
 	
-	private static HashMap<GameState, GameStateComponent> allGameStateComponents = new HashMap<>();
+	private PanemGames pl;
+	private GameStateComponent currentGameStateComponent;
 	
-	private static GameState currentGameState = null;
-	
-	public GameStateManager() {
-		
+	public GameStateManager(PanemGames pl, GameStateComponent firstGameStateComponent) {
+		this.pl = pl;
+		Bukkit.getPluginManager().registerEvents(firstGameStateComponent, pl);
+		firstGameStateComponent.start();
+		this.currentGameStateComponent = firstGameStateComponent;
 	}
 	
-	public static GameState getCurrentGameState() {
-		return currentGameState;
+	public PanemGames getPlugin() {
+		return this.pl;
 	}
 	
-	public static void setCurrentGameState(GameState gameState) {
-		currentGameState = gameState;
+	public GameStateComponent getCurrentGameStateComponent() {
+		return currentGameStateComponent;
 	}
 	
-	private static GameStateComponent getGameStateComponent(GameState gameState) {
-		return allGameStateComponents.get(gameState);
+	public void setCurrentGameStateComponent(GameStateComponent gameStateComponent) {
+		currentGameStateComponent = gameStateComponent;
+	}
+	
+	public void switchGameStateComponent(GameStateComponent newGameStateComponent) {
+		GameStateChangeEvent ev = new GameStateChangeEvent(currentGameStateComponent, newGameStateComponent);
+		Bukkit.getPluginManager().callEvent(ev);
+		HandlerList.unregisterAll(ev.getOldGameStateComponent());
+		Bukkit.getPluginManager().registerEvents(ev.getNewGameStateComponent(), pl);
+		ev.getNewGameStateComponent().start();
+		this.setCurrentGameStateComponent(ev.getNewGameStateComponent());
 	}
 	
 	// ENUM - GameState
@@ -34,60 +45,4 @@ public class GameStateManager {
 	public enum GameState {
 		LOBBY, WARM_UP, INGAME;
 	}
-	
-	// SUPERCLASS - GameStateComponent
-	
-	public static class GameStateComponent implements Listener {
-		
-		private GameState gameState;
-		
-		public GameStateComponent(GameState gameState) {
-			this.gameState = gameState;
-		}
-		
-		public void start() {
-			GameStateManager.setCurrentGameState(gameState);
-		}
-		
-		public void finish(GameStateComponent nextGameStateComponent) {
-			
-			nextGameStateComponent.start();
-		}
-		
-		private GameState getGameState() {
-			return this.gameState;
-		}
-		
-	}
-	
-	// INTERFACE - GameStateChangeListener
-	
-	public interface GameStateChangeListener extends PanemListener {
-		
-		public void onGameStateChange(GameStateChangeEvent ev);
-		
-	}
-	
-	// CLASS - GameStateChangeEvent
-	
-	public class GameStateChangeEvent implements PanemEvent {
-		
-		private GameStateComponent fromGameStateComponent;
-		private GameStateComponent toGameStateComponent;
-		
-		public GameStateChangeEvent(GameStateComponent fromGameStateComponent, GameStateComponent toGameStateComponent) {
-			this.fromGameStateComponent = fromGameStateComponent;
-			this.toGameStateComponent = toGameStateComponent;
-		}
-		
-		public GameStateComponent getOldGameStateComponent() {
-			return fromGameStateComponent;
-		}
-		
-		public GameStateComponent getNewGameStateComponent() {
-			return toGameStateComponent;
-		}
-		
-	}
-
 }

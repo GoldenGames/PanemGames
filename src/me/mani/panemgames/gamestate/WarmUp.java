@@ -8,10 +8,8 @@ import me.mani.panemgames.LocationManager;
 import me.mani.panemgames.PanemGames;
 import me.mani.panemgames.PlayerManager;
 import me.mani.panemgames.gamestate.GameStateManager.GameState;
-import me.mani.panemgames.gamestate.GameStateManager.GameStateComponent;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 public class WarmUp extends GameStateComponent {
@@ -19,7 +17,7 @@ public class WarmUp extends GameStateComponent {
 	Countdown warpUpCountdown;
 	
 	public WarmUp(PanemGames pl) {
-		super(GameState.WARM_UP);
+		super(pl, GameState.WARM_UP);
 	}
 	
 	@Override
