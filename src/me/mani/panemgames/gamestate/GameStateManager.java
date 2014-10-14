@@ -1,7 +1,7 @@
 package me.mani.panemgames.gamestate;
 
 import me.mani.panemgames.PanemGames;
-import me.mani.panemgames.event.events.GameStateChangeEvent;
+import me.mani.panemgames.event.gamestate.GameStateChangeEvent;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;

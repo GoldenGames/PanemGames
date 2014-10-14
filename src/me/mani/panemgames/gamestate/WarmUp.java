@@ -3,10 +3,10 @@ package me.mani.panemgames.gamestate;
 import me.mani.panemgames.CountdownCallback;
 import me.mani.panemgames.CountdownManager;
 import me.mani.panemgames.CountdownManager.Countdown;
-import me.mani.panemgames.CountdownManager.Countdown.CountdownCountEvent;
 import me.mani.panemgames.LocationManager;
 import me.mani.panemgames.PanemGames;
 import me.mani.panemgames.PlayerManager;
+import me.mani.panemgames.event.countdown.CountdownCountEvent;
 import me.mani.panemgames.gamestate.GameStateManager.GameState;
 
 import org.bukkit.Location;
@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 
 public class WarmUp extends GameStateComponent {
 
-	Countdown warpUpCountdown;
+	private Countdown warmUpCountdown;
 	
 	public WarmUp(PanemGames pl) {
 		super(pl, GameState.WARM_UP);
@@ -22,10 +22,10 @@ public class WarmUp extends GameStateComponent {
 	
 	@Override
 	public void start() {
-		startWarpUp();
+		startWarmUp();
 	}
 	
-	public void startWarpUp() {
+	public void startWarmUp() {
 		
 		// Teleport
 		

@@ -1,5 +1,6 @@
 package me.mani.panemgames.listener;
 
+import me.mani.panemgames.ItemManager;
 import me.mani.panemgames.LocationManager;
 import me.mani.panemgames.PanemGames;
 import me.mani.panemgames.PlayerManager;
@@ -52,6 +53,10 @@ public class PlayerJoinListener implements Listener {
 	         
 	        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(tabHeader);
 		}
+		
+		// Give test item
+		
+		p.getInventory().addItem(ItemManager.getById(0).toItemStack());
 	}
 
 }

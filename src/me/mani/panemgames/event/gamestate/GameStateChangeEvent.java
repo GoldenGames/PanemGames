@@ -1,4 +1,4 @@
-package me.mani.panemgames.event.events;
+package me.mani.panemgames.event.gamestate;
 
 import me.mani.panemgames.gamestate.GameStateComponent;
 

@@ -5,11 +5,11 @@ import java.util.Random;
 import me.mani.panemgames.CountdownCallback;
 import me.mani.panemgames.CountdownManager;
 import me.mani.panemgames.CountdownManager.Countdown;
-import me.mani.panemgames.CountdownManager.Countdown.CountdownCountEvent;
 import me.mani.panemgames.LocationManager;
 import me.mani.panemgames.PanemGames;
 import me.mani.panemgames.PlayerManager;
 import me.mani.panemgames.effects.ParticleEffect;
+import me.mani.panemgames.event.countdown.CountdownCountEvent;
 import me.mani.panemgames.gamestate.GameStateManager.GameState;
 
 import org.bukkit.Location;

@@ -1,6 +1,6 @@
 package me.mani.panemgames;
 
-import me.mani.panemgames.CountdownManager.Countdown.CountdownCountEvent;
+import me.mani.panemgames.event.countdown.CountdownCountEvent;
 
 public interface CountdownCallback {
 	

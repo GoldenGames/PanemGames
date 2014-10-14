@@ -1,15 +1,23 @@
 package me.mani.panemgames;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import me.mani.panemgames.commands.HologramCommand;
 import me.mani.panemgames.commands.PingCommand;
 import me.mani.panemgames.commands.RemovePointCommand;
 import me.mani.panemgames.commands.SetPointCommand;
+import me.mani.panemgames.config.ConfigManager;
+import me.mani.panemgames.config.ItemFile;
 import me.mani.panemgames.gamestate.GameStateManager;
 import me.mani.panemgames.gamestate.Lobby;
 import me.mani.panemgames.holograms.Hologram;
+import me.mani.panemgames.listener.EntityDamageByEntityListener;
 import me.mani.panemgames.listener.PlayerJoinListener;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -21,6 +29,7 @@ public class PanemGames extends JavaPlugin implements Listener {
 	private PlayerScoreboardManager playerScoreboardManager;
 	private TimeManager timeManager;
 	private GameStateManager gameStateManager;
+	private ConfigManager configManager;
 	
 	private Hologram welcomeHologram;
 	
@@ -41,6 +50,7 @@ public class PanemGames extends JavaPlugin implements Listener {
 		// Listener
 		
 		Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(this), this);
+		Bukkit.getPluginManager().registerEvents(new EntityDamageByEntityListener(this), this);
 		
 		// Load Locations
 		
@@ -72,6 +82,15 @@ public class PanemGames extends JavaPlugin implements Listener {
 		UpdatingScheduler.add(timeManager);
 		updatingScheduler.startUpdatingSchedule(this);	
 		
+		// ConfigManager
+		
+		configManager = new ConfigManager(new ItemFile("items"));
+		configManager.loadAll();
+		
+		List<String> lore = Arrays.asList("§3Line");
+
+		ItemManager.addItem(new ItemObject(0, Material.IRON_SPADE, "§6Spade", lore, 20));
+		
 		// Hologram
 		
 		welcomeHologram = new Hologram("welcomeHologram", LocationManager.getLocation("lobbyWelcome").getLocation());
@@ -85,6 +104,10 @@ public class PanemGames extends JavaPlugin implements Listener {
 	
 	@Override
 	public void onDisable() {
+		
+		// ConfigManager
+		
+		configManager.saveAll();
 		
 		// Save Locations
 		
