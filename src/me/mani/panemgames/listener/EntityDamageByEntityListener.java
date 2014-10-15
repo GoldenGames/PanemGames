@@ -4,6 +4,8 @@ import me.mani.panemgames.DamageCalculater;
 import me.mani.panemgames.ItemManager;
 import me.mani.panemgames.PanemGames;
 
+import org.bukkit.Material;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
@@ -25,15 +27,24 @@ public class EntityDamageByEntityListener implements Listener {
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent ev) {
 		if (!(ev.getEntity() instanceof Damageable))
 			return;
+		Damageable e = (Damageable) ev.getEntity();
+		if (ev.getDamager() instanceof Arrow) {
+			int baseDamage = ItemManager.getBaseDamage(Material.ARROW);
+			double newHealth = e.getHealth() - new DamageCalculater(baseDamage).getTotalDamage();
+			if (newHealth < 0)
+				newHealth = 0.0;
+			e.setHealth(newHealth);
+			ev.setDamage(0.0);
+			return;
+		}
 		if (!(ev.getDamager() instanceof Player))
 			return;
-		Damageable e = (Damageable) ev.getEntity();
 		Player p = (Player) ev.getDamager();
 		int baseDamage = ItemManager.getBaseDamage(p.getItemInHand().getType());
 		double newHealth = e.getHealth() - new DamageCalculater(baseDamage).getTotalDamage();
 		if (newHealth < 0)
 			newHealth = 0.0;
 		e.setHealth(newHealth);
+		ev.setDamage(0.0);
 	}
-
 }

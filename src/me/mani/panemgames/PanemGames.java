@@ -65,7 +65,7 @@ public class PanemGames extends JavaPlugin implements Listener {
 																	//	7
 		playerScoreboardManager.addValueAll("§2", 6);				//	6
 		playerScoreboardManager.addValueAll("§7Durst/Hunger:", 5);	//	5
-		playerScoreboardManager.addValueAll("§6██████████", 4);	//	4
+		playerScoreboardManager.addValueAll("§6██████████", 4);		//	4
 		playerScoreboardManager.addValueAll("§3", 3);				//	3
 		playerScoreboardManager.addValueAll("§7Körper:", 2);		//	2
 		playerScoreboardManager.addValueAll("§8███§a██§8█████", 1);	//	1
@@ -78,8 +78,16 @@ public class PanemGames extends JavaPlugin implements Listener {
 		
 		UpdatingScheduler updatingScheduler = new UpdatingScheduler();
 		UpdatingScheduler.add(timeManager);
-		updatingScheduler.startUpdatingSchedule(this);	
+		updatingScheduler.startUpdatingSchedule(this);
+		
+		// ConfigManager
+		
+		new ConfigManager(this);
 
+		// ItemManager
+		
+		new ItemManager();
+		
 		// Hologram
 		
 		welcomeHologram = new Hologram("welcomeHologram", LocationManager.getLocation("lobbyWelcome").getLocation());
