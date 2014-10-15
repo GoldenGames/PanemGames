@@ -53,10 +53,6 @@ public class PlayerJoinListener implements Listener {
 	         
 	        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(tabHeader);
 		}
-		
-		// Give test item
-		
-		p.getInventory().addItem(ItemManager.getById(0).toItemStack());
 	}
 
 }

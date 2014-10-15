@@ -1,49 +1,25 @@
 package me.mani.panemgames;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.inventory.ItemStack;
+import java.util.EnumMap;
+import me.mani.panemgames.config.ConfigSession;
+import org.bukkit.Material;
 
 public class ItemManager {
 	
-	private static List<ItemObject> allItemObjects = new ArrayList<>();
+	private static EnumMap<Material, Integer> materialDamage = new EnumMap<>(Material.class);
 	
-	public static void addItem(ItemObject itemObject) {
-		if (getById(itemObject.getId()) == null)
-			allItemObjects.add(itemObject);
-		else
-			System.out.println("An item with this id already exist!");
-	}
-	
-	public static ItemObject getById(int id) {
-		for (ItemObject itemObject : allItemObjects) {
-			if (itemObject.getId() == id)
-				return itemObject;
-		}
-		return null;
-	}
-	
-	public static ItemObject getByItemStack(ItemStack itemStack) {
-		for (ItemObject itemObject : allItemObjects) {
-			if (itemStack.getType().equals(itemObject.getMaterial()))
-				return itemObject;
-			if (itemStack.getItemMeta().getDisplayName().equals(itemObject.getName()))
-				return itemObject;
-			if (itemStack.getItemMeta().getLore().equals(itemObject.getLore()))
-				return itemObject;
-		}
-		return null;
-	}
-	
-	public static List<ItemObject> getAll() {
-		return allItemObjects;
-	}
-
-	public static void setAll(List<ItemObject> allItemObjects2) {
-		for (ItemObject itemObject : allItemObjects2) {
-			addItem(itemObject);
+	static {
+		ConfigSession session = new ConfigSession("damages");
+		for (Material material : Material.values()) {
+			session.getConfig().addDefault(material.name(), 0);
+			if (session.getConfig().contains(material.name()))
+				materialDamage.put(material, session.getConfig().getInt(material.name()));
 		}
 	}
 	
+	public static int getBaseDamage(Material material) {
+		if (materialDamage.containsKey(material))
+			return materialDamage.get(material);
+		return 0;
+	}
 }

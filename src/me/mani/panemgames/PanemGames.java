@@ -1,6 +1,5 @@
 package me.mani.panemgames;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -9,7 +8,6 @@ import me.mani.panemgames.commands.PingCommand;
 import me.mani.panemgames.commands.RemovePointCommand;
 import me.mani.panemgames.commands.SetPointCommand;
 import me.mani.panemgames.config.ConfigManager;
-import me.mani.panemgames.config.ItemFile;
 import me.mani.panemgames.gamestate.GameStateManager;
 import me.mani.panemgames.gamestate.Lobby;
 import me.mani.panemgames.holograms.Hologram;
@@ -81,16 +79,7 @@ public class PanemGames extends JavaPlugin implements Listener {
 		UpdatingScheduler updatingScheduler = new UpdatingScheduler();
 		UpdatingScheduler.add(timeManager);
 		updatingScheduler.startUpdatingSchedule(this);	
-		
-		// ConfigManager
-		
-		configManager = new ConfigManager(new ItemFile("items"));
-		configManager.loadAll();
-		
-		List<String> lore = Arrays.asList("§3Line");
 
-		ItemManager.addItem(new ItemObject(0, Material.IRON_SPADE, "§6Spade", lore, 20));
-		
 		// Hologram
 		
 		welcomeHologram = new Hologram("welcomeHologram", LocationManager.getLocation("lobbyWelcome").getLocation());
@@ -104,10 +93,6 @@ public class PanemGames extends JavaPlugin implements Listener {
 	
 	@Override
 	public void onDisable() {
-		
-		// ConfigManager
-		
-		configManager.saveAll();
 		
 		// Save Locations
 		

@@ -1,34 +1,40 @@
 package me.mani.panemgames.config;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.io.File;
 
+import org.bukkit.configuration.file.YamlConfiguration;
 
 public class ConfigManager {
 	
-	private List<ConfigFile> allConfigFiles = new ArrayList<>();
+	private static String defaultPath;
+	private static String defaultEnding;
+	private static YamlConfiguration config;
 	
-	public ConfigManager(ConfigFile... allConfigFiles) {
-		this.allConfigFiles.addAll(Arrays.asList(allConfigFiles));
+	static {
+		defaultPath = "plugins/PanemGames/";
+		defaultEnding = ".yml";
+		config = YamlConfiguration.loadConfiguration(new File("plugins/PanemGames/config.yml"));
+		addDefaults(config);
+		if (config.getString("defaultPath") != null)
+			defaultPath = config.getString("defaultPath");
+		if (config.getString("defaultEnding") != null)
+			defaultEnding = config.getString("defaultEnding");
 	}
 	
-	public void saveAll() {
-		for (ConfigFile configFile : allConfigFiles) {
-			configFile.setAll();
-			try {
-				configFile.getConfig().save(configFile.getFile());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+	private static void addDefaults(YamlConfiguration config) {
+		config.addDefault("defaultPath", defaultPath);
+		config.addDefault("defaultEnding", defaultEnding);
 	}
 	
-	public void loadAll() {
-		for (ConfigFile configFile : allConfigFiles) {
-			configFile.getAll();
-		}
+	public static String getDefaultPath() {
+		return defaultPath;
 	}
-
+	
+	public static String getDefaultEnding() {
+		return defaultEnding;
+	}
+	
+	public static File getFileByDefaults(String fileName) {
+		return new File(defaultPath + fileName + defaultEnding);
+	}
 }
