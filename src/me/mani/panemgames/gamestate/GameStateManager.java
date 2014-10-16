@@ -1,43 +1,33 @@
 package me.mani.panemgames.gamestate;
 
 import me.mani.panemgames.PanemGames;
-import me.mani.panemgames.event.gamestate.GameStateChangeEvent;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 
-
 public class GameStateManager {
 	
-	private PanemGames pl;
-	private GameStateComponent currentGameStateComponent;
+	private static GameStateComponent currentGameStateComponent;
 	
-	public GameStateManager(PanemGames pl, GameStateComponent firstGameStateComponent) {
-		this.pl = pl;
-		Bukkit.getPluginManager().registerEvents(firstGameStateComponent, pl);
+	public GameStateManager(GameStateComponent firstGameStateComponent) {
+		Bukkit.getPluginManager().registerEvents(firstGameStateComponent, PanemGames.getPanemGames());
 		firstGameStateComponent.start();
-		this.currentGameStateComponent = firstGameStateComponent;
+		currentGameStateComponent = firstGameStateComponent;
 	}
 	
-	public PanemGames getPlugin() {
-		return this.pl;
-	}
-	
-	public GameStateComponent getCurrentGameStateComponent() {
+	public static GameStateComponent getCurrentGameStateComponent() {
 		return currentGameStateComponent;
 	}
 	
-	public void setCurrentGameStateComponent(GameStateComponent gameStateComponent) {
+	public static void setCurrentGameStateComponent(GameStateComponent gameStateComponent) {
 		currentGameStateComponent = gameStateComponent;
 	}
 	
-	public void switchGameStateComponent(GameStateComponent newGameStateComponent) {
-		GameStateChangeEvent ev = new GameStateChangeEvent(currentGameStateComponent, newGameStateComponent);
-		Bukkit.getPluginManager().callEvent(ev);
-		HandlerList.unregisterAll(ev.getOldGameStateComponent());
-		Bukkit.getPluginManager().registerEvents(ev.getNewGameStateComponent(), pl);
-		ev.getNewGameStateComponent().start();
-		this.setCurrentGameStateComponent(ev.getNewGameStateComponent());
+	public static void switchGameStateComponent(GameStateComponent newGameStateComponent) {
+		HandlerList.unregisterAll(currentGameStateComponent);
+		Bukkit.getPluginManager().registerEvents(newGameStateComponent, PanemGames.getPanemGames());
+		newGameStateComponent.start();
+		currentGameStateComponent = newGameStateComponent;
 	}
 	
 	// ENUM - GameState

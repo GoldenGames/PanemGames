@@ -1,13 +1,12 @@
 package me.mani.panemgames.listener;
 
-import me.mani.panemgames.ItemManager;
 import me.mani.panemgames.LocationManager;
+import me.mani.panemgames.Title;
 import me.mani.panemgames.PanemGames;
-import me.mani.panemgames.PlayerManager;
+import me.mani.panemgames.PanemGames.NewBlock;
 import me.mani.panemgames.PlayerScoreboardManager;
 import me.mani.panemgames.TemperatureManager;
 import me.mani.panemgames.UpdatingScheduler;
-import me.mani.panemgames.PlayerManager.ChatPosition;
 import net.minecraft.server.v1_7_R4.ChatSerializer;
 import net.minecraft.server.v1_7_R4.IChatBaseComponent;
 
@@ -53,6 +52,15 @@ public class PlayerJoinListener implements Listener {
 	         
 	        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(tabHeader);
 		}
+		
+		// Test Title
+		
+		Title title = new Title("Hallo", "§ePanemGames");
+		title.send(p);
+		
+		// Test Block
+		
+		pl.changeBlockState(p.getLocation().add(0, 2, 0), NewBlock.SEALANTERN);
 	}
 
 }

@@ -1,7 +1,6 @@
 package me.mani.panemgames;
 
-import java.util.Arrays;
-import java.util.List;
+import java.lang.reflect.Field;
 
 import me.mani.panemgames.commands.HologramCommand;
 import me.mani.panemgames.commands.PingCommand;
@@ -10,12 +9,18 @@ import me.mani.panemgames.commands.SetPointCommand;
 import me.mani.panemgames.config.ConfigManager;
 import me.mani.panemgames.gamestate.GameStateManager;
 import me.mani.panemgames.gamestate.Lobby;
+import me.mani.panemgames.gamestate.WarmUp;
 import me.mani.panemgames.holograms.Hologram;
 import me.mani.panemgames.listener.EntityDamageByEntityListener;
 import me.mani.panemgames.listener.PlayerJoinListener;
+import net.minecraft.server.v1_7_R4.Block;
+import net.minecraft.server.v1_7_R4.PacketPlayOutBlockChange;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
+import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -68,7 +73,7 @@ public class PanemGames extends JavaPlugin implements Listener {
 		playerScoreboardManager.addValueAll("§6██████████", 4);		//	4
 		playerScoreboardManager.addValueAll("§3", 3);				//	3
 		playerScoreboardManager.addValueAll("§7Körper:", 2);		//	2
-		playerScoreboardManager.addValueAll("§8███§a██§8█████", 1);	//	1
+																	//	1
 		
 		// TimeManager
 		
@@ -96,7 +101,8 @@ public class PanemGames extends JavaPlugin implements Listener {
 		// Starte Lobbyphase
 		
 		PlayerManager.sendAll("§7[§ePanemGames§7] §8Willkommen bei §cPanemGames");
-		gameStateManager = new GameStateManager(this, new Lobby(this));
+		// Lobby lobby = new Lobby();
+		gameStateManager = new GameStateManager(new WarmUp());
 	}
 	
 	@Override
@@ -127,6 +133,71 @@ public class PanemGames extends JavaPlugin implements Listener {
 	
 	public GameStateManager getGameStateManager() {
 		return this.gameStateManager;
+	}
+	
+	public void changeBlockState(Location loc, NewBlock newBlock) {
+		PacketPlayOutBlockChange blockChange = new PacketPlayOutBlockChange(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ(), ((CraftWorld) loc.getWorld()).getHandle());
+		
+		try {
+			Field blockField = PacketPlayOutBlockChange.class.getDeclaredField("block");
+			blockField.setAccessible(true);
+			blockField.set(blockChange, Block.getById(newBlock.getId()));
+		
+			Field dataField = PacketPlayOutBlockChange.class.getDeclaredField("data");
+			dataField.setAccessible(true);
+			dataField.set(blockChange, newBlock.getData());
+		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		
+		for (Player p : PlayerManager.getAll())
+			((CraftPlayer) p).getHandle().playerConnection.sendPacket(blockChange);
+	}
+	
+	public enum NewBlock {
+		SLIME_BLOCK (165, 0),
+		BARRIER (166, 0),
+		IRON_TRAPDOOR (167, 0),
+		GRANITE (1, 1),
+		POLISHED_GRANITE (1, 2),
+		DIORITE (1, 3),
+		POLISHED_DIORITE (1, 4),
+		ANDESITE (1, 5),
+		POLISHED_ANDESITE (1, 6),
+		PRISMARINE (168, 0),
+		PRISMARINE_BRICKS (168, 1),
+		DARK_PRISMARINE (168, 2),
+		SEALANTERN (169, 0),
+		RED_SANDSTONE (179, 0),
+		CHISELED_RED_SANDSTONE (179, 1),
+		SMOOTH_RED_SANDSTONE (179, 2),
+		SPRUCE_FENCE (188, 0),
+		BIRCH_FENCE (189, 0),
+		JUNGLE_FENCE (190, 0),
+		DARK_OAK_FENCE (191, 0),
+		ACACIA_FENCE (192, 0),
+		SPRUCE_DOOR (193, 0),
+		BIRCH_DOOR (194, 0),
+		JUNGLE_DOOR (195, 0),
+		DARK_OAK_DOOR (196, 0),
+		ACACIA_DOOR (197, 0);
+		
+		private int id;
+		private int data;
+		
+		private NewBlock(int id, int data) {
+			this.id = id;
+			this.data = data;
+		}
+		
+		public int getId() {
+			return this.id;
+		}
+		
+		public int getData() {
+			return this.data;
+		}
+		
 	}
 	
 }

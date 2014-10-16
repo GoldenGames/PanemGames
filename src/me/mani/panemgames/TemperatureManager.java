@@ -3,6 +3,7 @@ package me.mani.panemgames;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.mani.panemgames.PlayerManager.ChatPosition;
 import me.mani.panemgames.TimeManager.Time;
 
 import org.bukkit.Material;
@@ -15,9 +16,11 @@ public class TemperatureManager implements Updatable {
 	
 	private double currentTemperature;
 	private double currentBaseTemperature;
+	private double currentBodyStatus = 0.0;
 	private Time tempTime;
 	private Player p;
-	private Score s;
+	private Score temperatureScore;
+	private Score bodyScore;
 	
 	public TemperatureManager(PanemGames pl, Player p) {
 		this.pl = pl;
@@ -28,12 +31,25 @@ public class TemperatureManager implements Updatable {
 	
 	public void update() {
 		this.currentTemperature = getTemperature();
-		if (s == null)
-			s = PlayerScoreboardManager.getPlayerScoreboard(getPlayer()).addValue("�e" + currentTemperature + "�", 7);
-		if (s.getEntry().equals("�e" + currentTemperature + "�"))
+		updateBody();
+		if (temperatureScore == null)
+			temperatureScore = PlayerScoreboardManager.getPlayerScoreboard(getPlayer()).addValue("§e" + currentTemperature + "°", 7);
+		if (temperatureScore.getEntry().equals("§e" + currentTemperature + "°"))
 			return;
-		PlayerScoreboardManager.getPlayerScoreboard(getPlayer()).resetScore(s);
-		s = PlayerScoreboardManager.getPlayerScoreboard(getPlayer()).addValue("�e" + currentTemperature + "�", 7);
+		PlayerScoreboardManager.getPlayerScoreboard(getPlayer()).resetScore(temperatureScore);
+		temperatureScore = PlayerScoreboardManager.getPlayerScoreboard(getPlayer()).addValue("§e" + currentTemperature + "°", 7);	
+	}
+	
+	private void updateBody() {
+		this.currentBodyStatus = getBodyStatus();
+		if (currentBodyStatus > 3 || currentBodyStatus < -3)
+			PlayerManager.send("§4KRITISCHER ZUSTAND", ChatPosition.ABOVE_ACTION_BAR, getPlayer());
+		if (bodyScore == null)
+			bodyScore = PlayerScoreboardManager.getPlayerScoreboard(getPlayer()).addValue(buildBodyStatusBar(currentBodyStatus), 1);
+		if (bodyScore.getEntry().equals(buildBodyStatusBar(currentBodyStatus)))
+			return;
+		PlayerScoreboardManager.getPlayerScoreboard(getPlayer()).resetScore(bodyScore);
+		bodyScore = PlayerScoreboardManager.getPlayerScoreboard(getPlayer()).addValue(buildBodyStatusBar(currentBodyStatus), 1);
 	}
 	
 	public Player getPlayer() {
@@ -72,6 +88,42 @@ public class TemperatureManager implements Updatable {
 	@SuppressWarnings("deprecation")
 	private boolean isNextToFire() {
 		return p.getTargetBlock(null, 2).getType().equals(Material.FIRE);
+	}
+	
+	private double getBodyStatus() {
+		double body = currentBodyStatus;
+		
+		if (currentTemperature <= 10)
+			body -= 0.04;
+		else if (currentTemperature >= 30)
+			body += 0.04;
+		else
+			body = body > 0 ? body - 0.02 : body + 0.02;
+		
+		return body;
+	}
+	
+	private String buildBodyStatusBar(double bodyStatus) {
+		String bodyStatusBar = "";
+		if (bodyStatus < -4)
+			bodyStatusBar = "§b██§8████████";
+		else if (bodyStatus >= -4 && bodyStatus < -3)
+			bodyStatusBar = "§8█§3██§8███████";
+		else if (bodyStatus >= -3 && bodyStatus < -2)
+			bodyStatusBar = "§8██§9██§8██████";
+		else if (bodyStatus >= -2 && bodyStatus < -1)
+			bodyStatusBar = "§8███§2██§8█████";
+		else if (bodyStatus >= -1 && bodyStatus < 1)
+			bodyStatusBar = "§8████§a██§8████";				// Mitte (Perfekt)
+		else if (bodyStatus >= 1 && bodyStatus < 2)
+			bodyStatusBar = "§8█████§2██§8███";
+		else if (bodyStatus >= 2 && bodyStatus < 3)
+			bodyStatusBar = "§8██████§5██§8██";
+		else if (bodyStatus >= 3 && bodyStatus < 4)
+			bodyStatusBar = "§8███████§c██§8█";
+		else
+			bodyStatusBar = "§8████████§4██";
+		return bodyStatusBar;
 	}
 	
 	private boolean isInWind() {

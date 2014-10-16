@@ -1,6 +1,7 @@
 package me.mani.panemgames.holograms;
 
 import org.bukkit.Location;
+import org.bukkit.block.Skull;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.WitherSkull;
@@ -26,6 +27,7 @@ public class HologramLine {
 		horse.setAgeLock(true);		
 		horse.setCustomName(text);
 		horse.setCustomNameVisible(true);
+		horse.setNoDamageTicks(Integer.MAX_VALUE);
 		
 		skull = (WitherSkull) location.getWorld().spawnEntity(location, EntityType.WITHER_SKULL);
 		skull.setDirection(new Vector(0, 0, 0));

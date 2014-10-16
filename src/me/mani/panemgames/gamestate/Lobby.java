@@ -26,8 +26,8 @@ public class Lobby extends GameStateComponent {
 	
 	private Countdown lobbyCountdown;
 
-	public Lobby(PanemGames pl) {
-		super(pl, GameState.LOBBY);	
+	public Lobby() {
+		super(GameState.LOBBY);	
 	}
 	
 	@Override
@@ -66,7 +66,7 @@ public class Lobby extends GameStateComponent {
 			
 			@Override
 			public void onCountdownFinish() {
-				finish(new WarmUp(getManager().getPlugin()));
+				finish(new WarmUp());
 			}
 
 			@Override

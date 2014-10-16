@@ -5,8 +5,8 @@ import me.mani.panemgames.gamestate.GameStateManager.GameState;
 
 public class Ingame extends GameStateComponent {
 
-	public Ingame(PanemGames pl) {
-		super(pl, GameState.INGAME);
+	public Ingame() {
+		super(GameState.INGAME);
 		// TODO Auto-generated constructor stub
 	}
 
