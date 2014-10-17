@@ -11,7 +11,10 @@ import me.mani.panemgames.gamestate.GameStateManager;
 import me.mani.panemgames.gamestate.Lobby;
 import me.mani.panemgames.gamestate.WarmUp;
 import me.mani.panemgames.holograms.Hologram;
+import me.mani.panemgames.listener.ChatListener;
 import me.mani.panemgames.listener.EntityDamageByEntityListener;
+import me.mani.panemgames.listener.PlayerDeathListener;
+import me.mani.panemgames.listener.PlayerInteractEntityListener;
 import me.mani.panemgames.listener.PlayerJoinListener;
 import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.PacketPlayOutBlockChange;
@@ -22,6 +25,7 @@ import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.DisplaySlot;
 
@@ -54,6 +58,9 @@ public class PanemGames extends JavaPlugin implements Listener {
 		
 		Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(this), this);
 		Bukkit.getPluginManager().registerEvents(new EntityDamageByEntityListener(this), this);
+		Bukkit.getPluginManager().registerEvents(new PlayerInteractEntityListener(this), this);
+		Bukkit.getPluginManager().registerEvents(new ChatListener(this), this);
+		Bukkit.getPluginManager().registerEvents(new PlayerDeathListener(this), this);
 		
 		// Load Locations
 		

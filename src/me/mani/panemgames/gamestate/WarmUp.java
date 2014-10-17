@@ -6,8 +6,10 @@ import me.mani.panemgames.CountdownCallback;
 import me.mani.panemgames.CountdownManager;
 import me.mani.panemgames.CountdownManager.Countdown;
 import me.mani.panemgames.LocationManager;
+import me.mani.panemgames.PanemPlayer;
 import me.mani.panemgames.PlayerManager;
 import me.mani.panemgames.effects.ParticleEffect;
+import me.mani.panemgames.event.PanemPlayerDeathEvent;
 import me.mani.panemgames.event.countdown.CountdownCountEvent;
 import me.mani.panemgames.gamestate.GameStateManager.GameState;
 
@@ -16,7 +18,6 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.util.Vector;
 
@@ -68,9 +69,9 @@ public class WarmUp extends GameStateComponent {
 	}
 	
 	@EventHandler
-	public void onDeath(PlayerDeathEvent ev) {
-		Player p = ev.getEntity();
-		ev.setDeathMessage(PlayerManager.pre + " §e" + p.getName() + " §8hat leider gelitten!");
+	public void onDeath(PanemPlayerDeathEvent ev) {
+		PanemPlayer p = ev.getPanemPlayer();
+		p.setAlive(false);
 		PlayerManager.playAll(Sound.AMBIENCE_THUNDER);
 	}
 	
