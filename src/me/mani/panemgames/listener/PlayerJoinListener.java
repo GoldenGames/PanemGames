@@ -3,6 +3,7 @@ package me.mani.panemgames.listener;
 import me.mani.panemgames.LocationManager;
 import me.mani.panemgames.PanemGames;
 import me.mani.panemgames.PanemPlayer;
+import me.mani.panemgames.PlayerManager;
 import me.mani.panemgames.PlayerScoreboardManager;
 import me.mani.panemgames.TemperatureManager;
 import me.mani.panemgames.Title;
@@ -56,11 +57,6 @@ public class PlayerJoinListener implements Listener {
 	         
 	        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(tabHeader);
 		}
-		
-		// Test Title
-		
-		Title title = new Title("Hallo", "§ePanemGames");
-		title.send(p);
 	}
 
 }

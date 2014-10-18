@@ -3,6 +3,7 @@ package me.mani.panemgames;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 public class PanemPlayer {
@@ -12,6 +13,7 @@ public class PanemPlayer {
 	private Player bukkitPlayer;
 	private boolean isAlive;
 	private Tribute tribute;
+	private boolean isSpectating = false;
 	
 	public PanemPlayer(Player p, Tribute tribute) {
 		this(p, tribute, true);
@@ -51,6 +53,20 @@ public class PanemPlayer {
 	
 	public static boolean isPanemPlayer(Player p) {
 		return getPanemPlayer(p) != null;
+	}
+	
+	public boolean isSpectating() {
+		return isSpectating;
+	}
+	
+	public void createSpectate(Entity e) {
+		PlayerManager.spectate(getPlayer(), e);
+		this.isSpectating = true;
+	}
+	
+	public void removeSpectate() {
+		PlayerManager.spectate(getPlayer(), getPlayer());
+		this.isSpectating = false;
 	}
 	
 	public static PanemPlayer getPanemPlayer(Player p) {

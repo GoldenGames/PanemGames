@@ -1,7 +1,10 @@
 package me.mani.panemgames.listener;
 
 import me.mani.panemgames.PanemGames;
+import me.mani.panemgames.PanemPlayer;
+import me.mani.panemgames.PlayerManager;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,10 +20,11 @@ public class PlayerInteractEntityListener implements Listener {
 	
 	@EventHandler
 	public void onEntityInteract(PlayerInteractEntityEvent ev) {
-		if (!(ev.getRightClicked() instanceof Player))
-			return;
 		Player p = ev.getPlayer();
-		Player clicked = (Player) ev.getRightClicked();
+		Entity clicked = ev.getRightClicked();
+		if (!PanemPlayer.isPanemPlayer(p))
+			return;
+		PanemPlayer.getPanemPlayer(p).createSpectate(clicked);
 	}
 
 }

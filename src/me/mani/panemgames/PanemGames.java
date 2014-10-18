@@ -1,14 +1,17 @@
 package me.mani.panemgames;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
+import me.mani.panemgames.PlayerManager.PacketCamera;
+import me.mani.panemgames.PlayerManager.PacketWorldBorder;
 import me.mani.panemgames.commands.HologramCommand;
 import me.mani.panemgames.commands.PingCommand;
 import me.mani.panemgames.commands.RemovePointCommand;
 import me.mani.panemgames.commands.SetPointCommand;
 import me.mani.panemgames.config.ConfigManager;
 import me.mani.panemgames.gamestate.GameStateManager;
-import me.mani.panemgames.gamestate.Lobby;
 import me.mani.panemgames.gamestate.WarmUp;
 import me.mani.panemgames.holograms.Hologram;
 import me.mani.panemgames.listener.ChatListener;
@@ -16,7 +19,10 @@ import me.mani.panemgames.listener.EntityDamageByEntityListener;
 import me.mani.panemgames.listener.PlayerDeathListener;
 import me.mani.panemgames.listener.PlayerInteractEntityListener;
 import me.mani.panemgames.listener.PlayerJoinListener;
+import me.mani.panemgames.listener.PlayerLiveChangeListener;
+import me.mani.panemgames.listener.PlayerToggleSneakListener;
 import net.minecraft.server.v1_7_R4.Block;
+import net.minecraft.server.v1_7_R4.EnumProtocol;
 import net.minecraft.server.v1_7_R4.PacketPlayOutBlockChange;
 
 import org.bukkit.Bukkit;
@@ -25,9 +31,9 @@ import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.DisplaySlot;
+import org.spigotmc.ProtocolInjector;
 
 public class PanemGames extends JavaPlugin implements Listener {
 
@@ -61,6 +67,8 @@ public class PanemGames extends JavaPlugin implements Listener {
 		Bukkit.getPluginManager().registerEvents(new PlayerInteractEntityListener(this), this);
 		Bukkit.getPluginManager().registerEvents(new ChatListener(this), this);
 		Bukkit.getPluginManager().registerEvents(new PlayerDeathListener(this), this);
+		Bukkit.getPluginManager().registerEvents(new PlayerToggleSneakListener(this), this);
+		Bukkit.getPluginManager().registerEvents(new PlayerLiveChangeListener(this), this);
 		
 		// Load Locations
 		
@@ -104,6 +112,18 @@ public class PanemGames extends JavaPlugin implements Listener {
 		
 		welcomeHologram = new Hologram("welcomeHologram", LocationManager.getLocation("lobbyWelcome").getLocation());
 		welcomeHologram.addLine("§7Willkommen bei §ePanemGames");
+		
+		// Packets
+		
+		try {
+			Method method = ProtocolInjector.class.getDeclaredMethods()[1];
+			method.setAccessible(true);
+			method.invoke(ProtocolInjector.class, EnumProtocol.PLAY, true, 67, PacketCamera.class);
+			method.invoke(ProtocolInjector.class, EnumProtocol.PLAY, true, 68, PacketWorldBorder.class);
+		} catch (IllegalAccessException | IllegalArgumentException
+				| InvocationTargetException | SecurityException e) {
+			e.printStackTrace();
+		}
 		
 		// Starte Lobbyphase
 		
