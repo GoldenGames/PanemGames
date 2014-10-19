@@ -87,6 +87,8 @@ public class TemperatureManager implements Updatable {
 	
 	@SuppressWarnings("deprecation")
 	private boolean isNextToFire() {
+		if (p.getTargetBlock(null, 2).getType().equals(Material.FIRE) && ItemManager.isCookable(p.getItemInHand().getType()))
+			CookManager.startCookTask(p);
 		return p.getTargetBlock(null, 2).getType().equals(Material.FIRE);
 	}
 	

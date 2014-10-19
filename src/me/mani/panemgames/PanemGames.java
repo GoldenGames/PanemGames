@@ -1,11 +1,7 @@
 package me.mani.panemgames;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
-import me.mani.panemgames.PlayerManager.PacketCamera;
-import me.mani.panemgames.PlayerManager.PacketWorldBorder;
 import me.mani.panemgames.commands.HologramCommand;
 import me.mani.panemgames.commands.PingCommand;
 import me.mani.panemgames.commands.RemovePointCommand;
@@ -21,6 +17,9 @@ import me.mani.panemgames.listener.PlayerInteractEntityListener;
 import me.mani.panemgames.listener.PlayerJoinListener;
 import me.mani.panemgames.listener.PlayerLiveChangeListener;
 import me.mani.panemgames.listener.PlayerToggleSneakListener;
+import me.mani.panemgames.util.PacketCamera;
+import me.mani.panemgames.util.PacketManager;
+import me.mani.panemgames.util.PacketWorldBorder;
 import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.EnumProtocol;
 import net.minecraft.server.v1_7_R4.PacketPlayOutBlockChange;
@@ -33,7 +32,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.DisplaySlot;
-import org.spigotmc.ProtocolInjector;
 
 public class PanemGames extends JavaPlugin implements Listener {
 
@@ -115,15 +113,8 @@ public class PanemGames extends JavaPlugin implements Listener {
 		
 		// Packets
 		
-		try {
-			Method method = ProtocolInjector.class.getDeclaredMethods()[1];
-			method.setAccessible(true);
-			method.invoke(ProtocolInjector.class, EnumProtocol.PLAY, true, 67, PacketCamera.class);
-			method.invoke(ProtocolInjector.class, EnumProtocol.PLAY, true, 68, PacketWorldBorder.class);
-		} catch (IllegalAccessException | IllegalArgumentException
-				| InvocationTargetException | SecurityException e) {
-			e.printStackTrace();
-		}
+		PacketManager.registerPacket(EnumProtocol.PLAY, true, 67, PacketCamera.class);
+		PacketManager.registerPacket(EnumProtocol.PLAY, true, 68, PacketWorldBorder.class);
 		
 		// Starte Lobbyphase
 		

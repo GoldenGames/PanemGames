@@ -23,4 +23,21 @@ public class ItemManager {
 			return materialDamage.get(material);
 		return 0;
 	}
+	
+	public static boolean isCookable(Material material) {
+		switch (material) {
+		case PORK:
+			return true;
+		case RAW_FISH:
+			return true;
+		case RAW_CHICKEN:
+			return true;
+		case POTATO_ITEM:
+			return true;
+		case RAW_BEEF:
+			return true;
+		default:
+			return false;
+		}
+	}
 }

@@ -18,6 +18,7 @@ public class CountdownManager {
     */
 	public static Countdown createCountdown(CountdownCallback callback, int from, int to, long speed) {
 		Countdown c = new Countdown(from, to, callback);
+		callback.boundToCountdown(c);
 		c.runTaskTimer(PanemGames.getPanemGames(), 0L, speed);
 		return c;
 	}
@@ -60,7 +61,7 @@ public class CountdownManager {
 			}
 		}	
 		
-		private void stop() {
+		public void stop() {
 			this.cancel();
 			callback.onCountdownFinish();
 		}
