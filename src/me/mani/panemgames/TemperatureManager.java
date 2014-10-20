@@ -82,7 +82,7 @@ public class TemperatureManager implements Updatable {
 	}
 	
 	private Time getTime() {
-		return pl.getTimeManager().getCurrentTime();
+		return TimeManager.getCurrentTime();
 	}
 	
 	@SuppressWarnings("deprecation")

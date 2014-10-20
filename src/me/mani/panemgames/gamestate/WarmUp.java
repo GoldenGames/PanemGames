@@ -10,12 +10,15 @@ import me.mani.panemgames.CountdownManager.Countdown;
 import me.mani.panemgames.LocationManager;
 import me.mani.panemgames.PanemPlayer;
 import me.mani.panemgames.PlayerManager;
+import me.mani.panemgames.PlayerScoreboardManager;
 import me.mani.panemgames.effects.ParticleEffect;
 import me.mani.panemgames.event.PanemPlayerDeathEvent;
 import me.mani.panemgames.event.countdown.CountdownCountEvent;
 import me.mani.panemgames.gamestate.GameStateManager.GameState;
+import me.mani.panemgames.util.FakePlayer;
 import net.minecraft.util.io.netty.channel.rxtx.RxtxChannelConfig.Stopbits;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -40,6 +43,13 @@ public class WarmUp extends GameStateComponent {
 		teleportAll();
 	}
 	
+	@Override
+	public void setupScoreboard(PlayerScoreboardManager playerScoreboardManager) {
+		
+	}
+	
+	private HashMap<Player, Location> allPlayerLocation = new HashMap<>();
+	
 	public void teleportAll() {
 		
 		allPlayer = PlayerManager.getAll().iterator();
@@ -59,8 +69,15 @@ public class WarmUp extends GameStateComponent {
 					cancelCountdown();
 					return;
 				}
-				if (allPlayer.hasNext())
-					allPlayer.next().teleport(LocationManager.getSpawnLocations(ev.getCurrentNumber()).getLocation());
+				if (allPlayer.hasNext()) {
+					Player p = allPlayer.next();
+					Location loc = LocationManager.getSpawnLocations(ev.getCurrentNumber()).getLocation();
+					p.teleport(loc);
+					FakePlayer fakePlayer = new FakePlayer(Bukkit.getOfflinePlayer("ungespielt"), loc);
+					fakePlayer.spawn();
+					fakePlayer.changeToDead();
+					allPlayerLocation.put(p, loc);
+				}
 				else
 					cancelCountdown();
 			}
@@ -76,8 +93,7 @@ public class WarmUp extends GameStateComponent {
 
 			@Override
 			public void onCountdownFinish() {
-				PlayerManager.sendAll(" \n");
-				PlayerManager.sendAll("§7[§ePanemGames§7] §eJetzt sollte PanemGames starten");
+				finish(new Ingame());
 			}
 			
 			@Override
@@ -100,15 +116,9 @@ public class WarmUp extends GameStateComponent {
 	@EventHandler
 	public void onMove(PlayerMoveEvent ev) {
 		Player p = ev.getPlayer();
-		if (ev.getTo().getBlock().getType() == Material.WOOD_PLATE || ev.getTo().getBlock().getType() == Material.STONE_PLATE) {
-			ParticleEffect.LARGE_EXPLODE.display(2, 2, 2, 1, 10, ev.getTo(), 20);
-			ev.getTo().getBlock().setType(Material.AIR);
-			Random random = new Random();
-			Vector pushFrom = ev.getTo().toVector();
-			Vector pushTo = ev.getTo().getBlock().getLocation().add(0.5, 0.5, 0.5).toVector();
-			p.setVelocity(pushFrom.subtract(pushTo).normalize().multiply(random.nextInt(2) + 3));
-			p.playSound(p.getLocation(), Sound.EXPLODE, 2, 5);
-			p.setHealth(0.0);
+		
+		if (ev.getTo().getX() != allPlayerLocation.get(p).getX() || ev.getTo().getZ() != allPlayerLocation.get(p).getZ()) {
+			p.teleport(new Location(ev.getTo().getWorld(), allPlayerLocation.get(p).getX(), ev.getTo().getY(), allPlayerLocation.get(p).getZ(), ev.getTo().getYaw(), ev.getTo().getPitch()));
 		}
 	}
 }

@@ -8,7 +8,7 @@ public class TimeManager implements Updatable {
 	private PanemGames pl;
 	
 	private World world;	
-	private Time currentTime;
+	private static Time currentTime;
 	
 	private Score s;
 	
@@ -75,7 +75,7 @@ public class TimeManager implements Updatable {
 			return Time.OTHER;
 	}
 
-	public Time getCurrentTime() {
+	public static Time getCurrentTime() {
 		return currentTime;
 	}
 	

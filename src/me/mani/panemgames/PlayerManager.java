@@ -26,6 +26,11 @@ public class PlayerManager {
 	
 	public static String pre = "§7[§ePanemGames§7]";
 	
+	public static void createPanemPlayers(Player... allPlayer) {
+		for (Player p : allPlayer)
+			new PanemPlayer(p, null);
+	}
+	
 	public static void sendAll(String message) {
 		Bukkit.broadcastMessage(message);
 	}

@@ -8,9 +8,11 @@ import me.mani.panemgames.CountdownManager.Countdown;
 import me.mani.panemgames.LocationManager;
 import me.mani.panemgames.PanemGames;
 import me.mani.panemgames.PlayerManager;
+import me.mani.panemgames.PlayerScoreboardManager;
 import me.mani.panemgames.effects.ParticleEffect;
 import me.mani.panemgames.event.countdown.CountdownCountEvent;
 import me.mani.panemgames.gamestate.GameStateManager.GameState;
+import me.mani.panemgames.mysql.DatabaseManager;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,6 +23,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.scoreboard.Scoreboard;
 
 public class Lobby extends GameStateComponent {
 	
@@ -33,6 +36,17 @@ public class Lobby extends GameStateComponent {
 	@Override
 	public void start() {
 		startCountdown();
+	}
+	
+	@Override
+	public void setupScoreboard(PlayerScoreboardManager playerScoreboardManager) {
+		playerScoreboardManager.resetAllScoresAll();
+		
+		playerScoreboardManager.addValueAll("§aWillkommen bei", 10);
+		playerScoreboardManager.addValueAll("§ePanemGames", 9);
+		playerScoreboardManager.addValueAll(" ", 8);
+		playerScoreboardManager.addValueAll("§7Spiel Nr.", 7);
+		playerScoreboardManager.addValueAll("§e" + DatabaseManager.getSettings().getSetting("games"), 6);
 	}
 	
 	public void startCountdown() {

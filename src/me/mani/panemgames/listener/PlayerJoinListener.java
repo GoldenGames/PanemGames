@@ -5,16 +5,16 @@ import me.mani.panemgames.PanemGames;
 import me.mani.panemgames.PanemPlayer;
 import me.mani.panemgames.PlayerManager;
 import me.mani.panemgames.PlayerScoreboardManager;
-import me.mani.panemgames.TemperatureManager;
-import me.mani.panemgames.Title;
-import me.mani.panemgames.UpdatingScheduler;
+import me.mani.panemgames.util.FakePlayer;
 import net.minecraft.server.v1_7_R4.ChatSerializer;
 import net.minecraft.server.v1_7_R4.IChatBaseComponent;
 
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.spigotmc.ProtocolInjector.PacketTabHeader;
 
@@ -39,10 +39,6 @@ public class PlayerJoinListener implements Listener {
 		pl.getPlayerScoreboardManager().addPlayerScoreboard(p);
 		p.setScoreboard(PlayerScoreboardManager.getPlayerScoreboard(p).getScoreboard());
 		
-		// Temperature Scheduler
-		
-		UpdatingScheduler.add(new TemperatureManager(pl, p));	
-		
 		// Lobby Teleport
 		
 		p.teleport(LocationManager.getLocation("lobbySpawn").getLocation());
@@ -58,5 +54,4 @@ public class PlayerJoinListener implements Listener {
 	        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(tabHeader);
 		}
 	}
-
 }

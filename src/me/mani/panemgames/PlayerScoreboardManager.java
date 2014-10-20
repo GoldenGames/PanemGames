@@ -44,6 +44,13 @@ public class PlayerScoreboardManager {
 		values.remove(new Value(s.getEntry(), s.getScore()));
 	}
 	
+	public void resetAllScoresAll() {
+		for (PlayerScoreboard playerScoreboard : allPlayerScoreboards) {
+			playerScoreboard.resetAllScores();
+		}	
+		values.clear();
+	}
+	
 	public void addPlayerScoreboard(Player p) {
 		PlayerScoreboard playerScoreboard = new PlayerScoreboard(p);
 		playerScoreboard.setup(sm, title, slot, values);
@@ -102,6 +109,11 @@ public class PlayerScoreboardManager {
 		public void resetScore(Score s) {
 			this.s.resetScores(s.getEntry());
 		}	
+		
+		public void resetAllScores() {
+			for (String entry : this.s.getEntries())
+				this.s.resetScores(entry);
+		}
 	}
 	
 	private class Value {
