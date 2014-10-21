@@ -4,12 +4,16 @@ import java.util.Arrays;
 import java.util.List;
 
 import me.mani.panemgames.util.PacketCamera;
+import me.mani.panemgames.util.PacketUtil;
 import me.mani.panemgames.util.PacketWorldBorder;
 import me.mani.panemgames.util.PacketWorldBorder.Action;
 import net.minecraft.server.v1_7_R4.ChatSerializer;
+import net.minecraft.server.v1_7_R4.DataWatcher;
 import net.minecraft.server.v1_7_R4.EntityPlayer;
 import net.minecraft.server.v1_7_R4.IChatBaseComponent;
 import net.minecraft.server.v1_7_R4.PacketPlayOutChat;
+import net.minecraft.server.v1_7_R4.PacketPlayOutNamedEntitySpawn;
+import net.minecraft.util.com.mojang.authlib.GameProfile;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -105,6 +109,23 @@ public class PlayerManager {
 		for (Player p : Bukkit.getOnlinePlayers()) {
 			p.teleport(loc);
 		}
+	}
+	
+	public static void setInvisible(Player p, boolean invisible) {
+		for (Player player : getAll())
+			if (invisible)
+				player.hidePlayer(p);
+			else
+				player.showPlayer(p);
+	}
+	
+	public static void setInvisibleAll(boolean invisible) {
+		for (Player player : getAll())
+			for (Player player2 : getAll())
+				if (invisible)
+					player.hidePlayer(player2);
+				else	
+					player.showPlayer(player2);
 	}
 	
 	public static int getPing(Player p) {

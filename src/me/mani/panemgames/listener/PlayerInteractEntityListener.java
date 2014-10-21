@@ -22,6 +22,8 @@ public class PlayerInteractEntityListener implements Listener {
 	public void onEntityInteract(PlayerInteractEntityEvent ev) {
 		Player p = ev.getPlayer();
 		Entity clicked = ev.getRightClicked();
+		if (p.equals(clicked))
+			return;
 		if (!PanemPlayer.isPanemPlayer(p))
 			return;
 		PanemPlayer.getPanemPlayer(p).createSpectate(clicked);

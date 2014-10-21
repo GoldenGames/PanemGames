@@ -2,11 +2,9 @@ package me.mani.panemgames.gamestate;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Random;
 
 import me.mani.panemgames.CountdownCallback;
 import me.mani.panemgames.CountdownManager;
-import me.mani.panemgames.CountdownManager.Countdown;
 import me.mani.panemgames.LocationManager;
 import me.mani.panemgames.PanemPlayer;
 import me.mani.panemgames.PlayerManager;
@@ -15,20 +13,15 @@ import me.mani.panemgames.effects.ParticleEffect;
 import me.mani.panemgames.event.PanemPlayerDeathEvent;
 import me.mani.panemgames.event.countdown.CountdownCountEvent;
 import me.mani.panemgames.gamestate.GameStateManager.GameState;
+import me.mani.panemgames.util.EntityArmorStand;
 import me.mani.panemgames.util.FakePlayer;
-import net.minecraft.util.io.netty.channel.rxtx.RxtxChannelConfig.Stopbits;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.craftbukkit.v1_7_R4.util.UnsafeList.Itr;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.WitherSkull;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.util.Vector;
 
 public class WarmUp extends GameStateComponent {
 	
@@ -73,9 +66,6 @@ public class WarmUp extends GameStateComponent {
 					Player p = allPlayer.next();
 					Location loc = LocationManager.getSpawnLocations(ev.getCurrentNumber()).getLocation();
 					p.teleport(loc);
-					FakePlayer fakePlayer = new FakePlayer(Bukkit.getOfflinePlayer("ungespielt"), loc);
-					fakePlayer.spawn();
-					fakePlayer.changeToDead();
 					allPlayerLocation.put(p, loc);
 				}
 				else
@@ -86,6 +76,11 @@ public class WarmUp extends GameStateComponent {
 	}
 	
 	public void startWarmUp() {
+		
+		// Teleport Fix
+		
+		PlayerManager.setInvisibleAll(true);
+		PlayerManager.setInvisibleAll(false);
 				
 		// Countdown
 		

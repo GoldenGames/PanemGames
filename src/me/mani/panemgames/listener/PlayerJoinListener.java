@@ -3,18 +3,14 @@ package me.mani.panemgames.listener;
 import me.mani.panemgames.LocationManager;
 import me.mani.panemgames.PanemGames;
 import me.mani.panemgames.PanemPlayer;
-import me.mani.panemgames.PlayerManager;
 import me.mani.panemgames.PlayerScoreboardManager;
-import me.mani.panemgames.util.FakePlayer;
 import net.minecraft.server.v1_7_R4.ChatSerializer;
 import net.minecraft.server.v1_7_R4.IChatBaseComponent;
 
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
-import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.spigotmc.ProtocolInjector.PacketTabHeader;
 
