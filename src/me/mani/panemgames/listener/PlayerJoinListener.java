@@ -4,6 +4,8 @@ import me.mani.panemgames.LocationManager;
 import me.mani.panemgames.PanemGames;
 import me.mani.panemgames.PanemPlayer;
 import me.mani.panemgames.PlayerScoreboardManager;
+import me.mani.panemgames.holograms.Hologram;
+import me.mani.panemgames.holograms.HologramLine;
 import net.minecraft.server.v1_7_R4.ChatSerializer;
 import net.minecraft.server.v1_7_R4.IChatBaseComponent;
 
@@ -38,6 +40,14 @@ public class PlayerJoinListener implements Listener {
 		// Lobby Teleport
 		
 		p.teleport(LocationManager.getLocation("lobbySpawn").getLocation());
+		
+		// Holograms
+		
+		if(((CraftPlayer) p).getHandle().playerConnection.networkManager.getVersion() >= 47) {
+			for (Hologram holo : Hologram.getAllHolograms())
+				for (HologramLine line : holo.getAllLines())
+					line.sendArmorStand(p);
+		}
 		
 		// Tablist
 		

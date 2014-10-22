@@ -83,21 +83,13 @@ public class PlayerManager {
 		
 		PacketWorldBorder worldBorderWarning = new PacketWorldBorder();
 		worldBorderWarning.setAction(Action.SET_WARNING_BLOCKS);
-		worldBorderWarning.setWarningBlocks(getDistance((int) (((Damageable) p).getHealth() / 4)));
+		worldBorderWarning.setWarningBlocks(getDistance(((Damageable) p).getHealth()));
 		((CraftPlayer) p).getHandle().playerConnection.sendPacket(worldBorderWarning);
 	}
 
-	private static int getDistance(int redness){
-        switch(redness){
-        case 5: return 10000;
-        case 4: return 15000;
-        case 3: return 24000;
-        case 2: return 29000;
-        case 1: return 35000;
-        case 0: return 40000;
-        default: return 10000;
-        }
-    }
+	private static int getDistance(double health){
+		return (int) (20 - health) * 2500;
+	}
 	
 	public static void playAll(Sound sound) {
 		for (Player p : Bukkit.getOnlinePlayers()) {

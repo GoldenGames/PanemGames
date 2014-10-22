@@ -3,6 +3,7 @@ package me.mani.panemgames;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.mani.panemgames.DamageCalculater.TimerDamage;
 import me.mani.panemgames.PlayerManager.ChatPosition;
 import me.mani.panemgames.TimeManager.Time;
 
@@ -19,6 +20,7 @@ public class TemperatureManager implements Updatable {
 	private double currentBodyStatus = 0.0;
 	private Time tempTime;
 	private Player p;
+	private TimerDamage timerDamage;
 	private Score temperatureScore;
 	private Score bodyScore;
 	
@@ -42,8 +44,16 @@ public class TemperatureManager implements Updatable {
 	
 	private void updateBody() {
 		this.currentBodyStatus = getBodyStatus();
-		if (currentBodyStatus > 3 || currentBodyStatus < -3)
+		if (currentBodyStatus > 3 || currentBodyStatus < -3) {
 			PlayerManager.send("§4KRITISCHER ZUSTAND", ChatPosition.ABOVE_ACTION_BAR, getPlayer());
+			getPlayer().setWalkSpeed((float) (0.2 - Math.abs(currentBodyStatus) / 200));	
+			if (Math.abs(currentBodyStatus) > 4 && timerDamage == null)
+				timerDamage = new DamageCalculater(2).multiDamage(getPlayer(), AttackCause.NATURE, 1);
+			if (Math.abs(currentBodyStatus) < 4 && timerDamage != null) {
+				timerDamage.stop();
+				timerDamage = null;
+			}
+		}
 		if (bodyScore == null)
 			bodyScore = PlayerScoreboardManager.getPlayerScoreboard(getPlayer()).addValue(buildBodyStatusBar(currentBodyStatus), 1);
 		if (bodyScore.getEntry().equals(buildBodyStatusBar(currentBodyStatus)))
@@ -95,10 +105,13 @@ public class TemperatureManager implements Updatable {
 	private double getBodyStatus() {
 		double body = currentBodyStatus;
 		
+		if (Math.abs(currentBodyStatus) >= 4)
+			return body;
+		
 		if (currentTemperature <= 10)
-			body -= 0.04;
+			body -= 0.02;
 		else if (currentTemperature >= 30)
-			body += 0.04;
+			body += 0.02;
 		else
 			body = body > 0 ? body - 0.02 : body + 0.02;
 		

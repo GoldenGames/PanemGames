@@ -1,21 +1,22 @@
 package me.mani.panemgames.event;
 
+import me.mani.panemgames.AttackCause;
+import me.mani.panemgames.PanemPlayer;
+
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-
-import me.mani.panemgames.PanemPlayer;
 
 public class PanemPlayerDeathEvent extends Event {
 
 	private PanemPlayer p;
-	private DeathCause cause;
+	private AttackCause cause;
 	private String deathMessage;
 	
-	public PanemPlayerDeathEvent(PanemPlayer p, DeathCause cause) {
+	public PanemPlayerDeathEvent(PanemPlayer p, AttackCause cause) {
 		this(p, cause, "");
 	}
 	
-	public PanemPlayerDeathEvent(PanemPlayer p, DeathCause cause, String deathMessage) {
+	public PanemPlayerDeathEvent(PanemPlayer p, AttackCause cause, String deathMessage) {
 		this.p = p;
 		this.cause = cause;
 		this.deathMessage = deathMessage;
@@ -25,7 +26,7 @@ public class PanemPlayerDeathEvent extends Event {
 		return p;
 	}
 	
-	public DeathCause getCause() {
+	public AttackCause getCause() {
 		return cause;
 	}
 	
@@ -37,12 +38,6 @@ public class PanemPlayerDeathEvent extends Event {
 		this.deathMessage = deathMessage;
 	}
 	
-	public enum DeathCause {
-		TRIBUTE,
-		NATURE,
-		TRAP;
-	}
-
 	private static final HandlerList handlers = new HandlerList();
 	 
 	public HandlerList getHandlers() {

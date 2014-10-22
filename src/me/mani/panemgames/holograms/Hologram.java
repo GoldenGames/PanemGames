@@ -52,6 +52,10 @@ public class Hologram {
 		return hologramLines.get(id);
 	}
 	
+	public List<HologramLine> getAllLines() {
+		return hologramLines;
+	}
+	
 	public List<String> getLineTexts() {
 		List<String> lineTexts = new ArrayList<>();
 		for (HologramLine line : hologramLines)
@@ -95,11 +99,14 @@ public class Hologram {
 		return null;
 	}
 	
+	public static List<Hologram> getAllHolograms() {
+		return allHolograms;
+	}
+	
 	public static void removeRaw(Player p) {
 		for(Entity e : p.getNearbyEntities(0.5, 1000, 0.5)) {
 			if (e instanceof WitherSkull)
 				e.remove();
 		}
 	}
-
 }
