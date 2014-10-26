@@ -4,6 +4,7 @@ import me.mani.panemgames.LocationManager;
 import me.mani.panemgames.PanemGames;
 import me.mani.panemgames.PanemPlayer;
 import me.mani.panemgames.PlayerScoreboardManager;
+import me.mani.panemgames.PanemGames.NewBlock;
 import me.mani.panemgames.holograms.Hologram;
 import me.mani.panemgames.holograms.HologramLine;
 import net.minecraft.server.v1_7_R4.ChatSerializer;

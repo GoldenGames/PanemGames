@@ -8,14 +8,24 @@ import me.mani.panemgames.PlayerScoreboardManager;
 import me.mani.panemgames.TemperatureManager;
 import me.mani.panemgames.TimeManager;
 import me.mani.panemgames.UpdatingScheduler;
+import me.mani.panemgames.chest.ChestManager;
+import me.mani.panemgames.chest.SpawnChest;
+import me.mani.panemgames.chest.WildChest;
+import me.mani.panemgames.chest.ChestManager.ChestType;
 import me.mani.panemgames.effects.ParticleEffect;
 import me.mani.panemgames.gamestate.GameStateManager.GameState;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.block.Block;
+import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.util.Vector;
@@ -79,5 +89,12 @@ public class Ingame extends GameStateComponent {
 			p.playSound(p.getLocation(), Sound.EXPLODE, 2, 5);
 			p.setHealth(0.0);
 		}
+	}
+	
+	@EventHandler
+	public void onInteract(PlayerInteractEvent ev) {
+		if (ev.getAction() != Action.RIGHT_CLICK_BLOCK)
+			return;
+		ChestManager.registerChest(ev.getClickedBlock());
 	}
 }

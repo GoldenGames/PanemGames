@@ -1,7 +1,5 @@
 package me.mani.panemgames;
 
-import java.lang.reflect.Field;
-
 import me.mani.panemgames.commands.HologramCommand;
 import me.mani.panemgames.commands.PingCommand;
 import me.mani.panemgames.commands.RemovePointCommand;
@@ -22,14 +20,9 @@ import me.mani.panemgames.mysql.DatabaseManager;
 import me.mani.panemgames.util.PacketCamera;
 import me.mani.panemgames.util.PacketManager;
 import me.mani.panemgames.util.PacketWorldBorder;
-import net.minecraft.server.v1_7_R4.Block;
 import net.minecraft.server.v1_7_R4.EnumProtocol;
-import net.minecraft.server.v1_7_R4.PacketPlayOutBlockChange;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
-import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -166,18 +159,18 @@ public class PanemGames extends JavaPlugin implements Listener {
 		ACACIA_DOOR (197, 0);
 		
 		private int id;
-		private int data;
+		private short data;
 		
 		private NewBlock(int id, int data) {
 			this.id = id;
-			this.data = data;
+			this.data = (short) data;
 		}
 		
 		public int getId() {
 			return this.id;
 		}
 		
-		public int getData() {
+		public short getData() {
 			return this.data;
 		}
 		
