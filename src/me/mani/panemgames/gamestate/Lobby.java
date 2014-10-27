@@ -6,7 +6,6 @@ import me.mani.panemgames.CountdownCallback;
 import me.mani.panemgames.CountdownManager;
 import me.mani.panemgames.CountdownManager.Countdown;
 import me.mani.panemgames.LocationManager;
-import me.mani.panemgames.PanemGames;
 import me.mani.panemgames.PlayerManager;
 import me.mani.panemgames.PlayerScoreboardManager;
 import me.mani.panemgames.effects.ParticleEffect;
@@ -23,7 +22,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.scoreboard.Scoreboard;
 
 public class Lobby extends GameStateComponent {
 	

@@ -2,7 +2,6 @@ package me.mani.panemgames.listener;
 
 import me.mani.panemgames.PanemGames;
 import me.mani.panemgames.PanemPlayer;
-import me.mani.panemgames.PlayerManager;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;

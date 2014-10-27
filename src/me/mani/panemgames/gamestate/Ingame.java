@@ -1,7 +1,9 @@
 package me.mani.panemgames.gamestate;
 
+import java.util.HashMap;
 import java.util.Random;
 
+import me.mani.panemgames.AnimationManager;
 import me.mani.panemgames.PanemGames;
 import me.mani.panemgames.PlayerManager;
 import me.mani.panemgames.PlayerScoreboardManager;
@@ -9,9 +11,6 @@ import me.mani.panemgames.TemperatureManager;
 import me.mani.panemgames.TimeManager;
 import me.mani.panemgames.UpdatingScheduler;
 import me.mani.panemgames.chest.ChestManager;
-import me.mani.panemgames.chest.SpawnChest;
-import me.mani.panemgames.chest.WildChest;
-import me.mani.panemgames.chest.ChestManager.ChestType;
 import me.mani.panemgames.effects.ParticleEffect;
 import me.mani.panemgames.gamestate.GameStateManager.GameState;
 
@@ -23,11 +22,8 @@ import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.util.Vector;
 
 public class Ingame extends GameStateComponent {
@@ -48,6 +44,26 @@ public class Ingame extends GameStateComponent {
 	public void setupScoreboard(PlayerScoreboardManager playerScoreboardManager) {
 		playerScoreboardManager.resetAllScoresAll();
 		
+		AnimationManager.playAnimationScoreboardBuildUp(playerScoreboardManager, new HashMap<String, Integer>() {
+			
+			private static final long serialVersionUID = 1L;
+
+		{
+			put("§7Zeit:", 11);			//	11
+										//	10
+			put("§1", 9);				//	9
+			put("§7Temperatur:", 8);	//	8
+										//	7
+			put("§2", 6);				//	6
+			put("§7Durst/Hunger:", 5);	//	5
+			put("§6██████████", 4);		//	4
+			put("§3", 3);				//	3
+			put("§7Körper:", 2);		//	2
+										//	1
+		}});
+		
+		/*
+		
 		playerScoreboardManager.addValueAll("§7Zeit:", 11);			//	11
 																	//	10
 		playerScoreboardManager.addValueAll("§1", 9);				//	9
@@ -59,6 +75,7 @@ public class Ingame extends GameStateComponent {
 		playerScoreboardManager.addValueAll("§3", 3);				//	3
 		playerScoreboardManager.addValueAll("§7Körper:", 2);		//	2
 																	//	1
+		*/
 		
 		// TimeManager
 		
@@ -93,8 +110,11 @@ public class Ingame extends GameStateComponent {
 	
 	@EventHandler
 	public void onInteract(PlayerInteractEvent ev) {
-		if (ev.getAction() != Action.RIGHT_CLICK_BLOCK)
+		if (ev.getAction() != Action.RIGHT_CLICK_BLOCK || !ev.hasBlock())
 			return;
-		ChestManager.registerChest(ev.getClickedBlock());
-	}
+		Block b = ev.getClickedBlock();
+		if (b.getType() == null || (b.getType() != Material.CHEST && b.getType() != Material.TRAPPED_CHEST))
+			return;
+		ChestManager.registerChest((Chest) ev.getClickedBlock().getState());
+	}	
 }

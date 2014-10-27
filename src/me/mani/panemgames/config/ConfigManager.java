@@ -1,12 +1,10 @@
 package me.mani.panemgames.config;
 
 import java.io.File;
-import java.io.IOException;
 
 import me.mani.panemgames.PanemGames;
 
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 public class ConfigManager {
 	

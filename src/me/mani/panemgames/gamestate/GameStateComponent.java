@@ -4,7 +4,6 @@ import me.mani.panemgames.PlayerScoreboardManager;
 import me.mani.panemgames.gamestate.GameStateManager.GameState;
 
 import org.bukkit.event.Listener;
-import org.bukkit.scoreboard.Scoreboard;
 
 public abstract class GameStateComponent implements Listener {
 	

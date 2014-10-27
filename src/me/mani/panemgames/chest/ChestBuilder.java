@@ -5,7 +5,6 @@ import java.util.EnumMap;
 import java.util.List;
 
 import me.mani.panemgames.ItemManager;
-import me.mani.panemgames.PlayerManager;
 import me.mani.panemgames.chest.ChestManager.ChestType;
 
 import org.bukkit.Material;
@@ -27,8 +26,13 @@ public class ChestBuilder {
 	public void build() {
 		Inventory inv = chest.getChestBlock().getBlockInventory();
 		for (int i : getSlotNumbers(type == ChestType.SPAWN_CHEST ? getRandomInteger(1, 2) : getRandomInteger(2, 5))) {
+			ItemStack randomItem = getRandomItemStack();
+			
+			if (type == ChestType.SPAWN_CHEST && inv.contains(randomItem))
+				while (inv.contains(randomItem))
+					randomItem = getRandomItemStack();
+			
 			inv.setItem(i, getRandomItemStack());
-			PlayerManager.sendAll("§3Count: §e" + i);
 		}
 	}
 	

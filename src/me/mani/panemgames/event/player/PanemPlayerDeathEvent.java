@@ -1,4 +1,4 @@
-package me.mani.panemgames.event;
+package me.mani.panemgames.event.player;
 
 import me.mani.panemgames.AttackCause;
 import me.mani.panemgames.PanemPlayer;

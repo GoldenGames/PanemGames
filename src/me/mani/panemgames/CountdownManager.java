@@ -2,7 +2,6 @@ package me.mani.panemgames;
 
 import me.mani.panemgames.event.countdown.CountdownCountEvent;
 
-import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class CountdownManager {

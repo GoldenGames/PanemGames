@@ -8,14 +8,15 @@ import org.bukkit.block.Chest;
 public abstract class PanemChest {
 	
 	private Location loc;
+	private ChestType type;
 	
-	public PanemChest(Location loc) {
+	public PanemChest(Location loc, ChestType type) {
 		this.loc = loc;
+		this.type = type;
 	}
 	
-	public void build(ChestType type) {
-		ChestBuilder builder = new ChestBuilder(this, type);
-		builder.build();
+	public void build() {
+		new ChestBuilder(this, this.type).build();
 	}
 	
 	public Location getLocation() {
@@ -24,6 +25,10 @@ public abstract class PanemChest {
 
 	public Chest getChestBlock() {
 		return (Chest) loc.getBlock().getState();
+	}
+	
+	public ChestType getType() {
+		return this.type;
 	}
 	
 }

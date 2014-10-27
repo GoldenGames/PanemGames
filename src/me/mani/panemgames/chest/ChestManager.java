@@ -5,34 +5,28 @@ import java.util.List;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
+import org.bukkit.block.Chest;
 
 public class ChestManager {
 	
 	private static List<Location> allLocations = new ArrayList<>(); 
 	
-	public static void registerChest(Block b) {
-		if (allLocations.contains(b.getLocation()))
+	public static void registerChest(Chest chest) {
+		if (allLocations.contains(chest.getLocation()))
 			return;
-		if (b != null && b.getType() != null && (b.getType() == Material.CHEST || b.getType() == Material.TRAPPED_CHEST)) {
-			if (b.getType() == Material.CHEST) {
-				WildChest wildChest = new WildChest(b.getLocation());
-				wildChest.build(ChestType.WILD_CHEST);
-			}
-			else {
-				SpawnChest spawnChest = new SpawnChest(b.getLocation());
-				spawnChest.build(ChestType.SPAWN_CHEST);
-			}
-		}
-		allLocations.add(b.getLocation());
+		if (chest.getType() == Material.CHEST)
+			new WildChest(chest.getLocation()).build();
+		else
+			new SpawnChest(chest.getLocation()).build();
+		allLocations.add(chest.getLocation());
 	}
 	
-	public static boolean isRegistered(Block b) {
-		return allLocations.contains(b.getLocation());
+	public static boolean isRegistered(Chest chest) {
+		return allLocations.contains(chest.getLocation());
 	}
 	
-	public static void unregisterChest(Block b) {
-		allLocations.remove(b.getLocation());
+	public static void unregisterChest(Chest chest) {
+		allLocations.remove(chest.getLocation());
 	}
 	
 	public static void unregisterAll() {

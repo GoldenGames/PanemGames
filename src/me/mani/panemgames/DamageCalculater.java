@@ -1,10 +1,9 @@
 package me.mani.panemgames;
 
-import me.mani.panemgames.CountdownManager.Countdown;
-import me.mani.panemgames.event.PanemPlayerDeathEvent;
-import me.mani.panemgames.event.countdown.CountdownCountEvent;
+import me.mani.panemgames.event.player.PanemPlayerDeathEvent;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -33,6 +32,8 @@ public class DamageCalculater {
 	}
 	
 	public boolean damage(Damageable e, AttackCause cause) {
+		if (e instanceof Player && ((Player) e).getGameMode() == GameMode.CREATIVE)
+			return false;
 		double newHealth = e.getHealth() - getTotalDamage();
 		boolean dead = false;
 		if (newHealth <= 0) {

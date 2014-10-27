@@ -3,20 +3,17 @@ package me.mani.panemgames.gamestate;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import me.mani.panemgames.AnimationManager;
 import me.mani.panemgames.CountdownCallback;
 import me.mani.panemgames.CountdownManager;
 import me.mani.panemgames.LocationManager;
 import me.mani.panemgames.PanemPlayer;
 import me.mani.panemgames.PlayerManager;
 import me.mani.panemgames.PlayerScoreboardManager;
-import me.mani.panemgames.effects.ParticleEffect;
-import me.mani.panemgames.event.PanemPlayerDeathEvent;
 import me.mani.panemgames.event.countdown.CountdownCountEvent;
+import me.mani.panemgames.event.player.PanemPlayerDeathEvent;
 import me.mani.panemgames.gamestate.GameStateManager.GameState;
-import me.mani.panemgames.util.EntityArmorStand;
-import me.mani.panemgames.util.FakePlayer;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -94,8 +91,10 @@ public class WarmUp extends GameStateComponent {
 			@Override
 			public void onCountdownCount(CountdownCountEvent ev) {
 				PlayerManager.sendAll(" \n \n \n" + "§7[§ePanemGames§7] §8Noch §b" + ev.getCurrentNumber() + " §8Sekunden bis zum Start!" + "\n \n \n ");
-				for (Player p : PlayerManager.getAll())
-						ParticleEffect.LARGE_SMOKE.display(2, 2, 2, 1, 10, p.getLocation(), 100);
+				for (Player p : PlayerManager.getAll()) {
+						AnimationManager.playAnimationCircle(p.getLocation().getBlock());
+						AnimationManager.playAnimationCircle(p.getLocation().clone().add(0, 1, 0).getBlock());
+				}
 			}
 			
 		}, 10, 0, 20L);

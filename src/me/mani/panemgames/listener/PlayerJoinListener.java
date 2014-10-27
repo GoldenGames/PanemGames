@@ -1,10 +1,10 @@
 package me.mani.panemgames.listener;
 
+import me.mani.panemgames.AnimationManager;
 import me.mani.panemgames.LocationManager;
 import me.mani.panemgames.PanemGames;
 import me.mani.panemgames.PanemPlayer;
 import me.mani.panemgames.PlayerScoreboardManager;
-import me.mani.panemgames.PanemGames.NewBlock;
 import me.mani.panemgames.holograms.Hologram;
 import me.mani.panemgames.holograms.HologramLine;
 import net.minecraft.server.v1_7_R4.ChatSerializer;
@@ -60,5 +60,9 @@ public class PlayerJoinListener implements Listener {
 	         
 	        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(tabHeader);
 		}
+		
+		// Testing Stuff
+		
+		AnimationManager.playAnimationLoading(p);
 	}
 }
